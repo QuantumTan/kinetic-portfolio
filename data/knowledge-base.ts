@@ -129,3 +129,163 @@ export const knowledgeBase = {
 };
 
 export type KnowledgeBase = typeof knowledgeBase;
+
+export function getAutonomousResponse(rawQuery: string): string {
+  const query = rawQuery.toLowerCase().trim();
+  const kb = knowledgeBase;
+
+  // 1. Projects
+  if (
+    query.includes("project") ||
+    query.includes("crms") ||
+    query.includes("crm") ||
+    query.includes("swinetrack") ||
+    query.includes("portfolio") ||
+    query.includes("repo") ||
+    query.includes("work") ||
+    query.includes("built")
+  ) {
+    const list = kb.projects
+      .map(
+        (p, i) =>
+          `[0${i + 1}] ${p.name}\n• Stack: ${p.stack.join(" / ")}\n• Summary: ${p.summary}\n• Repo: ${p.repo}`
+      )
+      .join("\n\n");
+    return `[PROJECTS_REGISTRY]\nJonathan has built 4 production-grade engineering solutions:\n\n${list}\n\nAsk for deep-dive specifications on any specific project.`;
+  }
+
+  // 2. Tech Stack / Skills / Languages
+  if (
+    query.includes("skill") ||
+    query.includes("stack") ||
+    query.includes("language") ||
+    query.includes("framework") ||
+    query.includes("tech") ||
+    query.includes("tool") ||
+    query.includes("c#") ||
+    query.includes(".net") ||
+    query.includes("laravel") ||
+    query.includes("java") ||
+    query.includes("database") ||
+    query.includes("mysql") ||
+    query.includes("sql") ||
+    query.includes("matrix")
+  ) {
+    return `[TECH_STACK_MATRIX]
+Jonathan's core engineering toolchain:
+
+[LANGUAGES]
+• ${kb.skills.languages.join(" • ")}
+
+[FRAMEWORKS & ARCHITECTURE]
+• ${kb.skills.frameworks.join(" • ")}
+
+[DATABASES & STORAGE]
+• ${kb.skills.databases.join(" • ")}
+
+[TOOLING & CI/CD]
+• ${kb.skills.toolchain.join(" • ")}
+
+[CORE SPECIALIZATION]
+• ${kb.skills.coreFocus.join("\n• ")}`;
+  }
+
+  // 3. Resume / CV
+  if (
+    query.includes("resume") ||
+    query.includes("cv") ||
+    query.includes("pdf") ||
+    query.includes("download")
+  ) {
+    return `[RESUME_ENDPOINT]
+Jonathan's official curriculum vitae is available:
+• PDF Path: /assets/Resume.pdf (Click [GET_RESUME_PDF] in header/hero)
+• Verified Credentials: See section 03 in this portfolio
+• LinkedIn: ${kb.owner.linkedin}
+• GitHub: ${kb.owner.github}`;
+  }
+
+  // 4. Contact / Hire / Inquiries
+  if (
+    query.includes("contact") ||
+    query.includes("email") ||
+    query.includes("phone") ||
+    query.includes("hire") ||
+    query.includes("reach") ||
+    query.includes("call") ||
+    query.includes("inquir") ||
+    query.includes("message")
+  ) {
+    return `[COMMUNICATIONS_DISPATCH]
+You can contact Jonathan Peguit Jr. directly:
+• Direct Email: ${kb.owner.email}
+• Mobile / Phone: ${kb.owner.phone}
+• LinkedIn: ${kb.owner.linkedin}
+• GitHub: ${kb.owner.github}
+• Base: ${kb.owner.location}
+• Status: Available for enterprise backend, .NET / Laravel, and full-stack software internships.`;
+  }
+
+  // 5. Education / University / Background
+  if (
+    query.includes("educat") ||
+    query.includes("school") ||
+    query.includes("university") ||
+    query.includes("mindanao") ||
+    query.includes("college") ||
+    query.includes("degree") ||
+    query.includes("mentor") ||
+    query.includes("student")
+  ) {
+    const eduList = kb.education
+      .map((e, i) => `[0${i + 1}] ${e.institution} (${e.timeline})\n• ${e.program}\n• ${e.notes}`)
+      .join("\n\n");
+    return `[ACADEMIC_TRAJECTORY]\n${eduList}`;
+  }
+
+  // 6. Certifications
+  if (
+    query.includes("cert") ||
+    query.includes("credential") ||
+    query.includes("badge") ||
+    query.includes("certiport") ||
+    query.includes("hackerrank") ||
+    query.includes("pearson")
+  ) {
+    const certList = kb.certifications
+      .map((c, i) => `[0${i + 1}] ${c.name}\n• Issuer: ${c.issuer}\n• Focus: ${c.scope.join(", ")}`)
+      .join("\n\n");
+    return `[VERIFIED_CREDENTIALS]\n${certList}\n\nAll certificates are verified and linkable in section 03 of this page.`;
+  }
+
+  // 7. Who is Jonathan / Bio / Role
+  if (
+    query.includes("who") ||
+    query.includes("about") ||
+    query.includes("bio") ||
+    query.includes("experience") ||
+    query.includes("jonathan") ||
+    query.includes("peguit") ||
+    query.includes("tan")
+  ) {
+    return `[OPERATOR_PROFILE: JONATHAN PEGUIT JR.]
+${kb.owner.bio}
+
+• Current Program: ${kb.owner.degree} at ${kb.owner.university}
+• Key Engineering Focus: ${kb.owner.focus}
+• Active Repositories: ${kb.projects.length} verified enterprise and full-stack solutions
+• Status: ${kb.owner.status}
+
+Direct questions regarding projects, tech stack, resume, or contact endpoints can be answered immediately.`;
+  }
+
+  // 8. General / Fallback
+  return `[TAN // COPILOT_RESPONSE]
+Jonathan Peguit Jr. is a Full-Stack, .NET & Systems Developer specializing in C# .NET 8 Clean Architecture, Laravel 12, Java, and database systems.
+
+Available queries:
+• "What are Jonathan's core projects?" for project breakdown.
+• "What is his tech stack?" for languages, frameworks, and databases.
+• "Where is his resume?" to view and download his CV.
+• "How can I contact him?" for email, phone, and LinkedIn endpoints.`;
+}

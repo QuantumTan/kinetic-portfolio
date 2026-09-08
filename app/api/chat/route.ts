@@ -1,11 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { knowledgeBase } from "@/data/knowledge-base";
+import { NextRequest } from "next/server";
+import { knowledgeBase, getAutonomousResponse } from "@/data/knowledge-base";
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 // Google Gemini API models in order of capability & availability
 const MODELS = [
   "gemini-3.7-flash",
-  "gemini-3.6-flash",
-  "gemini-3.5-flash",
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash",
   "gemini-flash-latest",
 ];
 
@@ -29,18 +33,49 @@ KNOWLEDGE BASE:
 ${JSON.stringify(kb, null, 2)}`;
 }
 
-export async function POST(req: NextRequest) {
-  const rawKey = process.env.GEMINI_API_KEY;
-  const apiKey = rawKey ? rawKey.trim().replace(/^["']|["']$/g, "") : undefined;
+function streamTextResponse(text: string): Response {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      // Stream in natural word chunks
+      const words = text.split(" ");
+      for (let i = 0; i < words.length; i++) {
+        const chunk = (i === 0 ? "" : " ") + words[i];
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`)
+        );
+      }
+      controller.close();
+    },
+  });
 
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
+  });
+}
+
+export async function POST(req: NextRequest) {
+  const rawKey =
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    process.env.GOOGLE_GEMINI_API_KEY ||
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+  const apiKey = rawKey ? rawKey.trim().replace(/^["']|["']$/g, "") : undefined;
+  const { messages } = await req.json();
+  const lastUserPrompt = messages?.[messages.length - 1]?.parts?.[0]?.text ?? "";
+
+  // Resilient fallback: If API key is not yet configured in Vercel/Netlify dashboard,
+  // stream verified response from the autonomous portfolio knowledge engine
   if (!apiKey || apiKey === "your_gemini_api_key_here") {
-    return NextResponse.json(
-      { error: "SYSTEM_CONFIG_ERR: GEMINI_API_KEY not configured in .env.local" },
-      { status: 500 }
-    );
+    const fallbackText = getAutonomousResponse(lastUserPrompt);
+    return streamTextResponse(fallbackText);
   }
 
-  const { messages } = await req.json();
   const systemPrompt = buildSystemPrompt();
 
   const body = {
@@ -77,11 +112,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // If upstream Gemini fails or is rate limited, fall back to autonomous knowledge base seamlessly
   if (!geminiRes || !geminiRes.ok) {
-    return NextResponse.json(
-      { error: `GEMINI_UPSTREAM_ERR: ${lastError}` },
-      { status: 500 }
-    );
+    const fallbackText = getAutonomousResponse(lastUserPrompt);
+    return streamTextResponse(fallbackText);
   }
 
   // Stream the response back to the client

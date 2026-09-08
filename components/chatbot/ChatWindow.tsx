@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { getAutonomousResponse } from "@/data/knowledge-base";
 
 interface Message {
   role: "user" | "model";
@@ -100,15 +101,12 @@ export default function ChatWindow({
           { role: "model", parts: [{ text: fullResponse }] },
         ]);
       } catch {
+        const fallbackText = getAutonomousResponse(text);
         setMessages([
           ...newHistory,
           {
             role: "model",
-            parts: [
-              {
-                text: "SYSTEM_ERR: Unable to dispatch query. Verify GEMINI_API_KEY in .env.local configuration.",
-              },
-            ],
+            parts: [{ text: fallbackText }],
           },
         ]);
       } finally {
