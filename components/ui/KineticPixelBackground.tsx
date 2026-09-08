@@ -103,10 +103,10 @@ export default function KineticPixelBackground() {
       const isLight = document.documentElement.classList.contains("light");
       const pixelColor = isLight ? "0, 0, 0" : "255, 255, 255";
       const scanLineColor = isLight
-        ? "rgba(0, 0, 0, 0.06)"
+        ? "rgba(0, 0, 0, 0.025)"
         : "rgba(255, 255, 255, 0.05)";
       const beamLineColor = isLight
-        ? "rgba(0, 0, 0, 0.08)"
+        ? "rgba(0, 0, 0, 0.035)"
         : "rgba(255, 255, 255, 0.07)";
 
       ctx.clearRect(0, 0, width, height);
@@ -168,7 +168,12 @@ export default function KineticPixelBackground() {
           p.twinkleSpeed = -p.twinkleSpeed;
         }
 
-        ctx.fillStyle = `rgba(${pixelColor}, ${Math.max(0.12, p.opacity)})`;
+        // Gentle low-contrast alpha in light mode to prevent eye strain, crisp cybernetic alpha in dark mode
+        const alpha = isLight
+          ? Math.min(0.18, Math.max(0.04, p.opacity * 0.22))
+          : Math.max(0.12, p.opacity);
+
+        ctx.fillStyle = `rgba(${pixelColor}, ${alpha})`;
 
         // Render crisp 1-bit pixel square
         ctx.fillRect(

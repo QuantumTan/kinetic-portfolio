@@ -4,49 +4,49 @@
    MONOCHROME SYSTEM TOKENS (BLACK & WHITE ONLY)
 ───────────────────────────────────────── */
 :root {
-  /* DARK THEME DEFAULT */
-  --color-bg: #000000;
-  --color-bg-alt: #0a0a0a;
-  --color-surface: #101010;
-  --color-card: #141414;
-  --color-card-hover: #1e1e1e;
+  /* DARK THEME DEFAULT (DEEP CRISP RETRO MONOCHROME) */
+  --color-bg: #09090b;
+  --color-bg-alt: #000000;
+  --color-surface: #141416;
+  --color-card: #18181c;
+  --color-card-hover: #222228;
   
-  --color-border: #333333;
+  --color-border: #33333b;
   --color-border-bright: #ffffff;
-  --color-border-subtle: #222222;
+  --color-border-subtle: #202026;
 
-  --color-text: #ffffff;
-  --color-text-muted: #aaaaaa;
-  --color-text-dim: #777777;
+  --color-text: #f4f4f5;
+  --color-text-muted: #a1a1aa;
+  --color-text-dim: #71717a;
 
-  --color-invert-bg: #ffffff;
-  --color-invert-text: #000000;
+  --color-invert-bg: #f4f4f5;
+  --color-invert-text: #09090b;
 
-  --shadow-pixel: 4px 4px 0px #222222;
+  --shadow-pixel: 4px 4px 0px #18181b;
   --shadow-pixel-white: 4px 4px 0px #ffffff;
 }
 
 .light {
-  /* LIGHT THEME (STRICT INVERTED BLACK & WHITE) */
-  --color-bg: #ffffff;
-  --color-bg-alt: #f8f8f8;
-  --color-surface: #f0f0f0;
+  /* LIGHT THEME (MATTE WARM-PAPER EDITORIAL - ZERO EYE STRAIN) */
+  --color-bg: #f4f4f0;
+  --color-bg-alt: #eaeae5;
+  --color-surface: #eaeae5;
   --color-card: #ffffff;
-  --color-card-hover: #f3f3f3;
+  --color-card-hover: #fafaf8;
 
-  --color-border: #000000;
-  --color-border-bright: #000000;
-  --color-border-subtle: #d0d0d0;
+  --color-border: #262626;
+  --color-border-bright: #121212;
+  --color-border-subtle: #d6d6cf;
 
-  --color-text: #000000;
-  --color-text-muted: #555555;
-  --color-text-dim: #888888;
+  --color-text: #141414;
+  --color-text-muted: #4e4e4e;
+  --color-text-dim: #717171;
 
-  --color-invert-bg: #000000;
-  --color-invert-text: #ffffff;
+  --color-invert-bg: #141414;
+  --color-invert-text: #f4f4f0;
 
-  --shadow-pixel: 4px 4px 0px #000000;
-  --shadow-pixel-white: 4px 4px 0px #000000;
+  --shadow-pixel: 4px 4px 0px #262626;
+  --shadow-pixel-white: 4px 4px 0px #262626;
 }
 
 /* ─────────────────────────────────────────
@@ -79,7 +79,12 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
   background-color: var(--color-bg);
+}
+
+section[id] {
+  scroll-margin-top: 90px;
 }
 
 html.custom-cursor-active {

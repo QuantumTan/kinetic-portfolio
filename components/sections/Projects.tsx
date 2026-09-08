@@ -53,7 +53,7 @@ export default function Projects() {
               </div>
 
               {/* IMAGE PREVIEW */}
-              <div className="relative aspect-[16/10] w-full border-2 border-[var(--color-border)] mb-3 overflow-hidden bg-black group-hover:border-[var(--color-text)] transition-colors">
+              <div className="relative aspect-[16/10] w-full border-2 border-[var(--color-border)] mb-3 overflow-hidden bg-[var(--color-surface)] group-hover:border-[var(--color-text)] transition-colors">
                 <Image
                   src={proj.image}
                   alt={proj.title}
@@ -122,7 +122,7 @@ export default function Projects() {
         <div className="mt-8 pt-4 border-t border-dashed border-[var(--color-border)] flex justify-center">
           <button
             onClick={() => setShowAll((prev) => !prev)}
-            className="pixel-btn text-xs px-6 py-2.5 hover:bg-white hover:text-black transition-all"
+            className="pixel-btn text-xs px-6 py-2.5 transition-all"
           >
             {showAll
               ? "[-] COLLAPSE_REGISTRY"

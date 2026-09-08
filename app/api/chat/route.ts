@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     system_instruction: { parts: [{ text: systemPrompt }] },
     contents: messages,
     generationConfig: {
-      maxOutputTokens: 350,
+      maxOutputTokens: 2048,
       temperature: 0.5,
     },
   };
@@ -108,11 +108,15 @@ export async function POST(req: NextRequest) {
             }
             try {
               const parsed = JSON.parse(data);
-              const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (text) {
-                controller.enqueue(
-                  new TextEncoder().encode(`data: ${JSON.stringify({ text })}\n\n`)
-                );
+              const parts = parsed?.candidates?.[0]?.content?.parts;
+              if (Array.isArray(parts)) {
+                for (const part of parts) {
+                  if (part.text) {
+                    controller.enqueue(
+                      new TextEncoder().encode(`data: ${JSON.stringify({ text: part.text })}\n\n`)
+                    );
+                  }
+                }
               }
             } catch {
               // skip malformed chunks

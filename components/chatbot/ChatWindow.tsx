@@ -125,12 +125,12 @@ export default function ChatWindow({
       id="chat-window"
       role="dialog"
       aria-label="TAN AI Copilot Interface"
-      className="fixed bottom-20 right-6 w-[380px] max-w-[calc(100vw-32px)] h-[520px] bg-[var(--color-card)] border-2 border-[var(--color-text)] shadow-[8px_8px_0px_#888] flex flex-col z-[9999] font-mono text-xs"
+      className="fixed bottom-20 right-4 sm:right-6 w-[380px] max-w-[calc(100vw-32px)] h-[520px] max-h-[80vh] bg-[var(--color-card)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_var(--color-border)] flex flex-col z-[9999] font-mono text-xs"
     >
       {/* TERMINAL HEADER */}
       <div className="flex items-center justify-between p-3 bg-[var(--color-surface)] border-b-2 border-[var(--color-border)] select-none">
         <div className="flex items-center gap-2 font-pixel text-xs text-[var(--color-text)]">
-          <span className="w-2 h-2 bg-white inline-block" />
+          <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
           <span>TAN // COPILOT_AGENT_v2.4</span>
         </div>
         <button
@@ -159,17 +159,17 @@ export default function ChatWindow({
             key={i}
             className={`p-3 border leading-relaxed ${
               msg.role === "user"
-                ? "bg-[var(--color-surface)] border-[var(--color-text)] text-[var(--color-text)] self-end max-w-[90%]"
-                : "bg-[var(--color-card)] border-[var(--color-border)] text-[var(--color-text-muted)] self-start max-w-[95%]"
+                ? "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] self-end max-w-[90%]"
+                : "bg-[var(--color-card)] border-[var(--color-border)] text-[var(--color-text)] self-start max-w-[95%]"
             }`}
           >
             <div className="font-pixel text-[0.6rem] text-[var(--color-text-dim)] mb-1">
-              {msg.role === "user" ? "&gt; OPERATOR_PROMPT:" : "&gt; TAN_RESPONSE:"}
+              {msg.role === "user" ? "> OPERATOR_PROMPT:" : "> TAN_RESPONSE:"}
             </div>
             <div className="text-[0.75rem] text-[var(--color-text)] whitespace-pre-wrap">
               {msg.parts[0].text}
               {isLoading && i === messages.length - 1 && (
-                <span className="terminal-cursor text-white ml-1">█</span>
+                <span className="terminal-cursor text-[var(--color-text)] ml-1">█</span>
               )}
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function ChatWindow({
             <button
               key={cmd}
               onClick={() => sendMessage(prompt)}
-              className="font-pixel text-[0.6rem] border border-[var(--color-border)] px-2 py-1 bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:text-black hover:bg-white hover:border-black transition-colors cursor-none"
+              className="font-pixel text-[0.6rem] border border-[var(--color-border)] px-2 py-1 bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] hover:border-[var(--color-invert-bg)] transition-colors cursor-none"
             >
               {cmd}
             </button>

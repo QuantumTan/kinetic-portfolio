@@ -28,9 +28,9 @@ export default function ChatTrigger() {
         id="chat-trigger"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Open TAN AI Copilot"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9995] pixel-btn bg-[var(--color-bg)] text-[var(--color-text)] border-2 border-[var(--color-text)] shadow-[3px_3px_0px_#888] sm:shadow-[4px_4px_0px_#888] hover:shadow-none hover:translate-x-1 hover:translate-y-1 font-pixel text-[0.65rem] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 flex items-center gap-2 cursor-none"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9995] pixel-btn bg-[var(--color-surface)] text-[var(--color-text)] border-2 border-[var(--color-text)] shadow-[4px_4px_0px_var(--color-border)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 font-pixel text-[0.65rem] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 flex items-center gap-2 cursor-none"
       >
-        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white inline-block animate-ping" />
+        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[var(--color-text)] inline-block animate-ping" />
         <span>[AI_COPILOT // TAN]</span>
       </button>
 

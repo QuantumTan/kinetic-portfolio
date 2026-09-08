@@ -25,7 +25,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle monochrome palette"
-      className="pixel-btn font-pixel text-[0.65rem] px-3 py-1 tracking-wider"
+      className="pixel-btn font-pixel text-[0.65rem] px-2.5 sm:px-3 py-1 tracking-wider whitespace-nowrap shrink-0"
     >
       [ {isDark ? "THEME: DARK" : "THEME: LIGHT"} ]
     </button>

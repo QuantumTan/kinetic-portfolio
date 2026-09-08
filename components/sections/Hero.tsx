@@ -64,12 +64,12 @@ export default function Hero() {
     <section
       id="home"
       ref={container}
-      className="w-full max-w-[1200px] mx-auto pt-4 sm:pt-6 pb-8 sm:pb-12 flex flex-col justify-center"
+      className="w-full max-w-[1200px] mx-auto pt-4 sm:pt-6 pb-8 sm:pb-12 flex flex-col justify-center scroll-mt-[100px]"
     >
       {/* TOP TELEMETRY STRIP */}
       <div className="hero-hud-badge flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-white inline-block animate-pulse" />
+          <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
           <span className="font-pixel text-[0.6rem] sm:text-[0.65rem] text-[var(--color-text)]">
             SYSTEM_STATUS: ONLINE // VER 2.7
           </span>
@@ -86,18 +86,18 @@ export default function Hero() {
         {/* ── LEFT COLUMN ── */}
         <div className="lg:col-span-7 flex flex-col justify-between gap-4 sm:gap-5">
           {/* ROCK-SOLID STABLE PIXEL TITLE (NO SHAKING / GLITCHING) */}
-          <div className="hero-title-box pixel-box p-4 sm:p-6 relative group transition-all">
-            <div className="text-[0.65rem] sm:text-xs font-mono text-[var(--color-text-dim)] mb-1 sm:mb-2">
+          <div className="hero-title-box pixel-box p-5 sm:p-7 relative group transition-all">
+            <div className="text-[0.65rem] sm:text-xs font-mono text-[var(--color-text-dim)] mb-2">
               // OPERATOR: QUANTUM_TAN [SYS_DEV]
             </div>
-            <h1 className="font-pixel text-xl sm:text-3xl md:text-5xl text-[var(--color-text)] tracking-tight leading-none uppercase select-none">
+            <h1 className="font-pixel text-lg sm:text-2xl md:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-normal uppercase select-none break-words py-1.5">
               JONATHAN PEGUIT JR.
             </h1>
             <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--color-border)] flex flex-wrap items-center gap-2 font-pixel text-[0.65rem] sm:text-xs text-[var(--color-text-muted)]">
               <span>[ROLE]</span>
               <span className="text-[var(--color-text)] bg-[var(--color-surface)] px-2 py-0.5 border border-[var(--color-border)]">
                 {roleText}
-                <span className="terminal-cursor text-white font-bold ml-1">█</span>
+                <span className="terminal-cursor text-[var(--color-text)] font-bold ml-1">█</span>
               </span>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function Hero() {
           {/* BIO TERMINAL PARAGRAPH */}
           <div className="pixel-box p-4 sm:p-5 font-mono text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed">
             <span className="text-[var(--color-text)] font-bold">INFO_LOG: </span>
-            Full-stack Laravel developer specialized in dynamic Blade templating, Bootstrap 5 UI, and RESTful API backends. Proficient in C# .NET 8 Clean Architecture, Java algorithms, and relational MySQL systems. Student organization officer and peer mentor at the University of Mindanao.
+           I'm an Information Technology student, mentor, and student organization officer at the University of Mindanao who enjoys learning and sharing new things through code. I'm still growing my skills in Networking, web development, and problem-solving, and I find joy in helping fellow students along the way. Always eager to learn and improve.
           </div>
 
           {/* STATS MATRIX */}
@@ -160,12 +160,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── RIGHT COLUMN: PIXEL ASCII TELEMETRY MODULE ── */}
+        {/* ── RIGHT COLUMN: PIXEL TELEMETRY MODULE ── */}
         <div className="lg:col-span-5 flex flex-col justify-between">
-          <div className="hero-telemetry-box pixel-box p-4 sm:p-5 bg-[var(--color-surface)] h-full flex flex-col justify-between font-mono text-xs">
+          <div className="hero-telemetry-box pixel-box p-5 sm:p-6 bg-[var(--color-surface)] h-full flex flex-col justify-between font-mono text-xs">
             {/* TERMINAL HEADER */}
-            <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-2 mb-3">
-              <span className="font-pixel text-[0.65rem] text-[var(--color-text)]">
+            <div className="flex items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-4">
+              <span className="font-pixel text-[0.7rem] text-[var(--color-text)]">
                 CORE_DIAGNOSTICS // HUD
               </span>
               <span className="text-[0.65rem] text-[var(--color-text-dim)]">
@@ -173,43 +173,38 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* ASCII ART & ARCHITECTURE BLOCK */}
-            <pre className="font-mono text-[0.6rem] sm:text-[0.65rem] text-[var(--color-text)] leading-tight bg-[var(--color-bg)] p-3 border border-[var(--color-border)] select-none overflow-x-auto">
-{`+-------------------------------+
-|  QUANTUM_TAN // CORE_MATRIX   |
-|  ===========================  |
-|  [01] FULLSTACK: LARAVEL 12   |
-|  [02] FRONTEND: BLADE & BS5   |
-|  [03] BACKEND: .NET 8 / C#    |
-|  [04] MODERN: NEXT.JS / TS    |
-|  [05] DATABASE: MYSQL / SQL   |
-+-------------------------------+`}
-            </pre>
-
             {/* TELEMETRY METRICS */}
-            <div className="space-y-2 pt-3 border-t border-[var(--color-border)] text-[0.65rem] sm:text-[0.7rem]">
-              <div className="flex justify-between">
+            <div className="space-y-3 py-2 text-[0.7rem] sm:text-xs">
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
                 <span className="text-[var(--color-text-dim)]">SYSTEM_HEALTH:</span>
                 <span className="text-[var(--color-text)] font-bold">100% NOMINAL</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
+                <span className="text-[var(--color-text-dim)]">OPERATOR:</span>
+                <span className="text-[var(--color-text)]">JONATHAN PEGUIT JR.</span>
+              </div>
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
                 <span className="text-[var(--color-text-dim)]">LOCATION:</span>
                 <span className="text-[var(--color-text)]">DAVAO CITY, PH (UTC+8)</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
                 <span className="text-[var(--color-text-dim)]">EDUCATION:</span>
                 <span className="text-[var(--color-text)]">BS INFORMATION TECH</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[var(--color-text-dim)]">PEER_MENTOR:</span>
-                <span className="text-[var(--color-text)]">ACTIVE (UM)</span>
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
+                <span className="text-[var(--color-text-dim)]">INSTITUTION:</span>
+                <span className="text-[var(--color-text)]">UNIVERSITY OF MINDANAO</span>
+              </div>
+              <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
+                <span className="text-[var(--color-text-dim)]">LEADERSHIP / ROLE:</span>
+                <span className="text-[var(--color-text)]">STUDENT ORG OFFICER & MENTOR</span>
               </div>
             </div>
 
             {/* BOTTOM STATUS HINT */}
-            <div className="mt-4 pt-2 border-t border-dashed border-[var(--color-border)] text-[0.65rem] text-[var(--color-text-dim)] flex items-center justify-between">
-              <span>STATUS:</span>
-              <span className="font-pixel text-white">[READY_FOR_DISPATCH]</span>
+            <div className="mt-4 pt-3 border-t-2 border-[var(--color-border)] text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] flex items-center justify-between">
+              <span>ACTIVE_STATUS:</span>
+              <span className="font-pixel bg-[var(--color-invert-bg)] text-[var(--color-invert-text)] border border-[var(--color-border)] px-2 py-1">[READY_FOR_DISPATCH]</span>
             </div>
           </div>
         </div>
