@@ -1,0 +1,26 @@
+<svg width="600" height="340" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="340" fill="#000000"/>
+  <rect x="10" y="10" width="580" height="320" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,4"/>
+  
+  <!-- POS Terminal Screen Wireframe -->
+  <rect x="40" y="45" width="260" height="190" fill="#0a0a0a" stroke="#333333" stroke-width="2"/>
+  <rect x="40" y="45" width="260" height="26" fill="#181818"/>
+  <text x="50" y="62" font-family="monospace" font-size="10" fill="#888888">SWINETRACK // POS_TERMINAL</text>
+  
+  <!-- POS Register items -->
+  <text x="50" y="95" font-family="monospace" font-size="9" fill="#ffffff">&gt; BATCH_WEIGHT: 114.5 KG</text>
+  <text x="50" y="115" font-family="monospace" font-size="9" fill="#888888">&gt; LIVESTOCK_TAG: #SW-9024</text>
+  <text x="50" y="135" font-family="monospace" font-size="9" fill="#888888">&gt; UNIT_PRICE: PHP / KG</text>
+  <text x="50" y="155" font-family="monospace" font-size="9" fill="#ffffff">&gt; TRANSACTION_TAX: COMPUTED</text>
+  <line x1="50" y1="170" x2="280" y2="170" stroke="#333333" stroke-width="1"/>
+  <text x="50" y="195" font-family="monospace" font-size="11" font-weight="700" fill="#ffffff">&gt; TOTAL_DUE: COMPLETED [OK]</text>
+  <rect x="50" y="210" width="6" height="10" fill="#ffffff"/>
+
+  <!-- Right Details -->
+  <text x="330" y="80" font-family="monospace" font-size="18" font-weight="700" fill="#ffffff">[SWINETRACK_POS]</text>
+  <text x="330" y="105" font-family="monospace" font-size="11" fill="#888888">// POINT_OF_SALE &amp; LIVESTOCK_LEDGER</text>
+  <text x="330" y="135" font-family="monospace" font-size="10" fill="#666666">STACK: LARAVEL 12 / PHP / MYSQL</text>
+  <text x="330" y="155" font-family="monospace" font-size="10" fill="#666666">ENGINE: VITE + TAILWIND + BLADE</text>
+  <text x="330" y="175" font-family="monospace" font-size="10" fill="#666666">SCOPE: WEIGHING / BILLING / INVENTORY</text>
+  <text x="330" y="215" font-family="monospace" font-size="11" font-weight="700" fill="#ffffff">[STATUS: DEPLOYED]</text>
+</svg>

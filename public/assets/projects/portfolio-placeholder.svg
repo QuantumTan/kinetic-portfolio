@@ -1,0 +1,25 @@
+<svg width="600" height="340" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="340" fill="#000000"/>
+  <rect x="10" y="10" width="580" height="320" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,4"/>
+  
+  <!-- Terminal Prompt Frame -->
+  <rect x="40" y="50" width="280" height="230" fill="#0a0a0a" stroke="#333333" stroke-width="2"/>
+  <rect x="40" y="50" width="280" height="30" fill="#181818"/>
+  <text x="55" y="70" font-family="monospace" font-size="11" fill="#888888">KINETIC_CORE // SHELL</text>
+  
+  <!-- Terminal Code lines -->
+  <text x="55" y="110" font-family="monospace" font-size="10" fill="#ffffff">&gt; INIT_NEXTJS_APP</text>
+  <text x="55" y="135" font-family="monospace" font-size="10" fill="#888888">&gt; BIND_GSAP_PHYSICS</text>
+  <text x="55" y="160" font-family="monospace" font-size="10" fill="#888888">&gt; PROXY_GEMINI_COPILOT</text>
+  <text x="55" y="185" font-family="monospace" font-size="10" fill="#ffffff">&gt; THEME: STRICT_MONO</text>
+  <text x="55" y="210" font-family="monospace" font-size="10" fill="#ffffff">&gt; STATUS: 60_FPS_OK</text>
+  <rect x="55" y="225" width="8" height="12" fill="#ffffff"/>
+  
+  <!-- Right metadata -->
+  <text x="350" y="100" font-family="monospace" font-size="18" font-weight="700" fill="#ffffff">[KINETIC_PORTFOLIO]</text>
+  <text x="350" y="130" font-family="monospace" font-size="12" fill="#888888">// SYSTEM_COPILOT_UI</text>
+  <text x="350" y="160" font-family="monospace" font-size="11" fill="#666666">STACK: NEXT.JS 15 / TAILWIND</text>
+  <text x="350" y="185" font-family="monospace" font-size="11" fill="#666666">ANIMATION: GSAP 3</text>
+  <text x="350" y="210" font-family="monospace" font-size="11" fill="#666666">AI: GEMINI 2.0 FLASH</text>
+  <text x="350" y="250" font-family="monospace" font-size="12" font-weight="700" fill="#ffffff">[STATUS: PRODUCTION]</text>
+</svg>

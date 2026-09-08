@@ -1,0 +1,36 @@
+<svg width="600" height="340" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="340" fill="#000000"/>
+  <rect x="10" y="10" width="580" height="320" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,4"/>
+  
+  <!-- CRM Kanban / Pipeline Board Wireframe -->
+  <rect x="40" y="50" width="80" height="150" fill="#0a0a0a" stroke="#333333" stroke-width="1.5"/>
+  <rect x="40" y="50" width="80" height="24" fill="#1c1c1c"/>
+  <text x="48" y="66" font-family="monospace" font-size="9" fill="#ffffff">LEADS</text>
+  <rect x="46" y="82" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+  <rect x="46" y="116" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+
+  <rect x="130" y="50" width="80" height="150" fill="#0a0a0a" stroke="#333333" stroke-width="1.5"/>
+  <rect x="130" y="50" width="80" height="24" fill="#1c1c1c"/>
+  <text x="138" y="66" font-family="monospace" font-size="9" fill="#ffffff">PROSPECTS</text>
+  <rect x="136" y="82" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+  <rect x="136" y="116" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+  <rect x="136" y="150" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+
+  <rect x="220" y="50" width="80" height="150" fill="#0a0a0a" stroke="#333333" stroke-width="1.5"/>
+  <rect x="220" y="50" width="80" height="24" fill="#1c1c1c"/>
+  <text x="228" y="66" font-family="monospace" font-size="9" fill="#ffffff">WON / CLIENTS</text>
+  <rect x="226" y="82" width="68" height="28" fill="#ffffff" opacity="0.9"/>
+  <text x="232" y="99" font-family="monospace" font-size="8" fill="#000000" font-weight="bold">$ CONVERTED</text>
+  <rect x="226" y="116" width="68" height="28" fill="#141414" stroke="#2a2a2a"/>
+
+  <!-- Analytics Line -->
+  <polyline points="40,250 110,230 180,260 240,220 300,210" stroke="#ffffff" stroke-width="2" fill="none"/>
+  
+  <!-- Right Details -->
+  <text x="330" y="80" font-family="monospace" font-size="18" font-weight="700" fill="#ffffff">[CRM_SYSTEM]</text>
+  <text x="330" y="105" font-family="monospace" font-size="11" fill="#888888">// ENTERPRISE_SALES_PIPELINE</text>
+  <text x="330" y="135" font-family="monospace" font-size="10" fill="#666666">STACK: LARAVEL 12 / PHP 8.2 / MYSQL</text>
+  <text x="330" y="155" font-family="monospace" font-size="10" fill="#666666">AUTH: FORTIFY + ROLE MIDDLEWARE</text>
+  <text x="330" y="175" font-family="monospace" font-size="10" fill="#666666">FEATURES: KANBAN / EXCEL / PDF / PEST</text>
+  <text x="330" y="215" font-family="monospace" font-size="11" font-weight="700" fill="#ffffff">[STATUS: PRODUCTION_READY]</text>
+</svg>
