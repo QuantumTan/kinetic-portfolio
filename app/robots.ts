@@ -13,6 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://jnthnpeguit.netlify.app/sitemap.xml",
+    sitemap: "https://jonathanpeguitjr.vercel.app/sitemap.xml",
   };
 }

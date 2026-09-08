@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://jnthnpeguit.netlify.app"; // Canonical base URL
+  const baseUrl = "https://jonathanpeguitjr.vercel.app"; // Canonical base URL
   const lastModified = new Date();
 
   return [

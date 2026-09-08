@@ -19,7 +19,7 @@ const monoFont = JetBrains_Mono({
 
 // Comprehensive Search Engine Optimization Metadata
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jnthnpeguit.netlify.app"),
+  metadataBase: new URL("https://jonathanpeguitjr.vercel.app"),
   title: {
     default: "Jonathan Peguit Jr. | Full-Stack Laravel & .NET Developer",
     template: "%s | Jonathan Peguit Jr.",
@@ -50,12 +50,12 @@ export const metadata: Metadata = {
   referrer: "origin-when-cross-origin",
   category: "technology",
   alternates: {
-    canonical: "https://jnthnpeguit.netlify.app",
+    canonical: "https://jonathanpeguitjr.vercel.app",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://jnthnpeguit.netlify.app",
+    url: "https://jonathanpeguitjr.vercel.app",
     siteName: "Jonathan Peguit Jr. Portfolio",
     title: "Jonathan Peguit Jr. | Full-Stack Laravel & .NET Developer",
     description:
@@ -88,6 +88,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: "HrnpRciGIgvXl2VOA8ObfsclmCSoXDKRDbScmaRN_M0",
+  },
   icons: {
     icon: "/assets/logo-portfolio.png",
     shortcut: "/assets/logo-portfolio.png",
@@ -101,11 +104,11 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://jnthnpeguit.netlify.app/#person",
+      "@id": "https://jonathanpeguitjr.vercel.app/#person",
       name: "Jonathan Peguit Jr.",
       alternateName: ["Jonathan Peguit", "QuantumTan", "Jonathan Hayo Peguit Jr."],
-      url: "https://jnthnpeguit.netlify.app",
-      image: "https://jnthnpeguit.netlify.app/assets/logo-portfolio.png",
+      url: "https://jonathanpeguitjr.vercel.app",
+      image: "https://jonathanpeguitjr.vercel.app/assets/logo-portfolio.png",
       jobTitle: "Full-Stack & Systems Developer",
       worksFor: {
         "@type": "Organization",
