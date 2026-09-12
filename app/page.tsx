@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col items-center">
       <Navbar />
-      {/* HEADER OFFSET SPACER: Guarantees fixed header never covers content */}
-      <div className="h-[64px] w-full shrink-0" aria-hidden="true" />
+      {/* HEADER OFFSET SPACER: Guarantees fixed header never covers content and provides space for CyberNeko */}
+      <div className="h-[88px] sm:h-[96px] w-full shrink-0" aria-hidden="true" />
       <main className="w-full max-w-[1200px] px-4 sm:px-6 pt-6 sm:pt-10 pb-16 flex flex-col items-center">
         <Hero />
         <Skills />

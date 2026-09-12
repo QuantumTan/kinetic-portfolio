@@ -64,10 +64,10 @@ export default function Hero() {
     <section
       id="home"
       ref={container}
-      className="w-full max-w-[1200px] mx-auto pt-4 sm:pt-6 pb-8 sm:pb-12 flex flex-col justify-center scroll-mt-[100px]"
+      className="relative w-full max-w-[1200px] mx-auto pt-6 sm:pt-8 pb-8 sm:pb-12 flex flex-col justify-center scroll-mt-[100px]"
     >
       {/* TOP TELEMETRY STRIP */}
-      <div className="hero-hud-badge flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
+      <div className="hero-hud-badge mt-3 sm:mt-5 flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
           <span className="font-pixel text-[0.6rem] sm:text-[0.65rem] text-[var(--color-text)]">
