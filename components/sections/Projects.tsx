@@ -5,12 +5,16 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { projects } from "@/data/projects";
+import { architectureData } from "@/data/architecture-data";
+import ArchitectureModal from "@/components/architecture/ArchitectureModal";
 
 const INITIAL_VISIBLE_COUNT = 2;
 
 export default function Projects() {
   const container = useRef<HTMLDivElement>(null);
   const [showAll, setShowAll] = useState(false);
+  const [archModalOpen, setArchModalOpen] = useState(false);
+  const [selectedArchId, setSelectedArchId] = useState<string>("crms-peguit");
 
   const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_VISIBLE_COUNT);
 
@@ -29,9 +33,22 @@ export default function Projects() {
   return (
     <section id="projects" ref={container} className="section-card">
       <div className="flex flex-wrap items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-6 gap-2">
-        <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
-          02 // PROJECT_REGISTRY
-        </h2>
+        <div className="flex items-center gap-3">
+          <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
+            02 // PROJECT_REGISTRY
+          </h2>
+          <button
+            onClick={() => {
+              setSelectedArchId("crms-peguit");
+              setArchModalOpen(true);
+            }}
+            aria-label="Open System Architecture Blueprint"
+            className="pixel-btn text-[0.6rem] sm:text-xs py-1 px-2.5 flex items-center gap-1.5"
+          >
+            <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping" />
+            <span>[⚡ SYS_BLUEPRINT]</span>
+          </button>
+        </div>
         <span className="font-mono text-xs text-[var(--color-text-dim)]">
           [SHOWING: {visibleProjects.length}/{projects.length}]
         </span>
@@ -87,31 +104,46 @@ export default function Projects() {
             </div>
 
             {/* ACTION TRIGGERS */}
-            <div className="flex gap-2 pt-3 border-t border-[var(--color-border)] mt-auto">
-              {proj.link && proj.link !== "#" ? (
-                <a
-                  href={proj.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pixel-btn flex-1 text-[0.6rem] sm:text-[0.65rem] py-2"
+            <div className="flex flex-col gap-2 pt-3 border-t border-[var(--color-border)] mt-auto">
+              {architectureData[proj.id] && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedArchId(proj.id);
+                    setArchModalOpen(true);
+                  }}
+                  className="pixel-btn w-full text-[0.6rem] sm:text-[0.65rem] py-1.5 flex items-center justify-center gap-1.5 bg-[var(--color-surface)] border-2 border-[var(--color-text)] hover:bg-[var(--color-card-hover)]"
                 >
-                  [&gt;] LAUNCH
-                </a>
-              ) : (
-                <span className="pixel-box flex-1 text-center py-2 text-[0.6rem] sm:text-[0.65rem] font-pixel text-[var(--color-text-dim)] cursor-not-allowed">
-                  [DEV_STAGE]
-                </span>
+                  <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block" />
+                  <span>[⚡ ARCH_BLUEPRINT]</span>
+                </button>
               )}
-              {proj.github && (
-                <a
-                  href={proj.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pixel-btn flex-1 text-[0.6rem] sm:text-[0.65rem] py-2"
-                >
-                  [#] REPO_SRC
-                </a>
-              )}
+              <div className="flex gap-2">
+                {proj.link && proj.link !== "#" ? (
+                  <a
+                    href={proj.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pixel-btn flex-1 text-[0.6rem] sm:text-[0.65rem] py-2 text-center"
+                  >
+                    [&gt;] LAUNCH
+                  </a>
+                ) : (
+                  <span className="pixel-box flex-1 text-center py-2 text-[0.6rem] sm:text-[0.65rem] font-pixel text-[var(--color-text-dim)] cursor-not-allowed">
+                    [DEV_STAGE]
+                  </span>
+                )}
+                {proj.github && (
+                  <a
+                    href={proj.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pixel-btn flex-1 text-[0.6rem] sm:text-[0.65rem] py-2 text-center"
+                  >
+                    [#] REPO_SRC
+                  </a>
+                )}
+              </div>
             </div>
           </article>
         ))}
@@ -130,6 +162,13 @@ export default function Projects() {
           </button>
         </div>
       )}
+
+      {/* SYSTEM ARCHITECTURE BLUEPRINT MODAL */}
+      <ArchitectureModal
+        isOpen={archModalOpen}
+        initialProjectId={selectedArchId}
+        onClose={() => setArchModalOpen(false)}
+      />
     </section>
   );
 }
