@@ -17,9 +17,13 @@ const QUICK_COMMANDS = [
 
 export default function ChatWindow({
   isOpen,
+  initialPrompt,
+  onClearPrompt,
   onClose,
 }: {
   isOpen: boolean;
+  initialPrompt?: string | null;
+  onClearPrompt?: () => void;
   onClose: () => void;
 }) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -115,6 +119,13 @@ export default function ChatWindow({
     },
     [messages, isLoading]
   );
+
+  useEffect(() => {
+    if (isOpen && initialPrompt) {
+      sendMessage(initialPrompt);
+      onClearPrompt?.();
+    }
+  }, [isOpen, initialPrompt, sendMessage, onClearPrompt]);
 
   if (!isOpen) return null;
 

@@ -134,6 +134,46 @@ export function getAutonomousResponse(rawQuery: string): string {
   const query = rawQuery.toLowerCase().trim();
   const kb = knowledgeBase;
 
+  // 0. Architecture & Blueprints Deep Dive
+  if (
+    query.includes("architecture") ||
+    query.includes("clean architecture") ||
+    query.includes("blueprint") ||
+    query.includes("domain") ||
+    query.includes("onion") ||
+    query.includes("mediatr") ||
+    query.includes("rbac") ||
+    query.includes("pricing") ||
+    query.includes("schema")
+  ) {
+    if (query.includes("laravel") || query.includes("rbac") || query.includes("lead")) {
+      return `[SYS_ARCH // LARAVEL 12 ENTERPRISE PLATFORM]
+Jonathan structures his Laravel 12 CRM platform with strict separation of concerns:
+• Routing & Auth: Fortify + Custom RBAC middleware (EnsureUserHasRole: Admin|Manager|Sales).
+• Validation: Dedicated FormRequest classes isolate payload validation before reaching controllers.
+• Domain Services: Complex actions (Lead conversion, PDF/Excel generation) are encapsulated in Services wrapped in DB::transaction() blocks.
+• Database: Relational MySQL InnoDB schema with indexed foreign keys and strict ACID compliance.
+Click [⚡ ARCH_BLUEPRINT] in the Projects section to inspect the full schema & request lifecycle.`;
+    }
+
+    if (query.includes("swinetrack") || query.includes("pos") || query.includes("weight")) {
+      return `[SYS_ARCH // SWINETRACK POS ENGINE]
+Jonathan's SwineTrack POS architecture solves high-throughput commercial livestock checkout:
+• Weight Engine: Dynamic price-per-kg calculation factoring in live carcass grade and gross/tare deduction.
+• Concurrency Protection: Uses pessimistic locking (SELECT ... FOR UPDATE) on livestock units to prevent duplicate sales across simultaneous checkout registers.
+• Batch Stock Ledger: Automatically decrements pen headcount and records immutable audit receipts.
+Click [⚡ ARCH_BLUEPRINT] in the Projects section to simulate the checkout lifecycle.`;
+    }
+
+    return `[SYS_ARCH // .NET 8 CLEAN ARCHITECTURE]
+Jonathan implements strict Onion / Clean Architecture with Domain-Driven Design (DDD) in CRMS_Peguit:
+• Tier 01 (CRMS.Api): Web API Controllers, JWT middleware, Swagger, DI Composition Root.
+• Tier 02 (CRMS.Application): CQRS Commands & Queries dispatched via MediatR, FluentValidation pipeline behaviors, DTO projections. Decoupled from EF Core.
+• Tier 03 (CRMS.Domain): Core enterprise aggregates, rich entities, and domain invariants with ZERO external package dependencies.
+• Tier 04 (CRMS.Infrastructure): EF Core 8 DbContext, SQL Server migrations, and Unit of Work repository implementations.
+Click [⚡ ARCH_BLUEPRINT] in the Projects section to inspect the interactive layer graph and SQL Server schema!`;
+  }
+
   // 1. Projects
   if (
     query.includes("project") ||

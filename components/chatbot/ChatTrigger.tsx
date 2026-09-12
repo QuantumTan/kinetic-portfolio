@@ -5,6 +5,7 @@ import ChatWindow from "./ChatWindow";
 
 export default function ChatTrigger() {
   const [isOpen, setIsOpen] = useState(false);
+  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
   // Ctrl+K keyboard shortcut
   useEffect(() => {
@@ -21,6 +22,20 @@ export default function ChatTrigger() {
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen]);
 
+  // Listen for custom "tan:open-with-query" dispatch from Architecture Explorer
+  useEffect(() => {
+    const handleTanQuery = (e: Event) => {
+      const customEvt = e as CustomEvent<{ query?: string }>;
+      if (customEvt.detail?.query) {
+        setPendingPrompt(customEvt.detail.query);
+      }
+      setIsOpen(true);
+    };
+
+    window.addEventListener("tan:open-with-query", handleTanQuery);
+    return () => window.removeEventListener("tan:open-with-query", handleTanQuery);
+  }, []);
+
   return (
     <>
       {/* FLOATING TERMINAL COPILOT TRIGGER BUTTON */}
@@ -35,7 +50,12 @@ export default function ChatTrigger() {
       </button>
 
       {/* CHAT WINDOW */}
-      <ChatWindow isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <ChatWindow
+        isOpen={isOpen}
+        initialPrompt={pendingPrompt}
+        onClearPrompt={() => setPendingPrompt(null)}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 }
