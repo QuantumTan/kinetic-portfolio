@@ -68,12 +68,21 @@ export default function Hero() {
     >
       {/* TOP TELEMETRY STRIP */}
       <div className="hero-hud-badge mt-3 sm:mt-5 flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
-        <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.dispatchEvent(new CustomEvent("kinetic:pulse", { detail: { power: 1.3 } }));
+            }
+          }}
+          className="flex items-center gap-2 hover:opacity-85 transition-opacity cursor-pointer"
+          title="Emit radar ping pulse"
+        >
           <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
           <span className="font-pixel text-[0.6rem] sm:text-[0.65rem] text-[var(--color-text)]">
-            SYSTEM_STATUS: ONLINE // VER 2.7
+            SYSTEM_STATUS: ONLINE // VER 2.7 [PING]
           </span>
-        </div>
+        </button>
         <div>
           <span>UNIV_OF_MINDANAO // BS_IT</span>
         </div>
@@ -204,7 +213,19 @@ export default function Hero() {
             {/* BOTTOM STATUS HINT */}
             <div className="mt-4 pt-3 border-t-2 border-[var(--color-border)] text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] flex items-center justify-between">
               <span>ACTIVE_STATUS:</span>
-              <span className="font-pixel bg-[var(--color-invert-bg)] text-[var(--color-invert-text)] border border-[var(--color-border)] px-2 py-1">[READY_FOR_DISPATCH]</span>
+              <a
+                href="#contact"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("kinetic:pulse", { detail: { power: 1.4 } }));
+                  }
+                }}
+                className="font-pixel bg-[var(--color-invert-bg)] text-[var(--color-invert-text)] border border-[var(--color-border)] px-2.5 py-1 hover:opacity-85 transition-opacity inline-flex items-center gap-1.5 cursor-pointer"
+                title="Jump to Communications Dispatch"
+              >
+                <span className="w-1.5 h-1.5 bg-[var(--color-invert-text)] inline-block animate-ping" />
+                <span>[READY_FOR_DISPATCH]</span>
+              </a>
             </div>
           </div>
         </div>

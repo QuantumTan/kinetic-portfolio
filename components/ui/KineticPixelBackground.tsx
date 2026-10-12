@@ -15,6 +15,15 @@ interface PixelParticle {
   twinkleSpeed: number;
 }
 
+interface Shockwave {
+  x: number;
+  y: number;
+  radius: number;
+  maxRadius: number;
+  speed: number;
+  alpha: number;
+}
+
 export default function KineticPixelBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -32,12 +41,31 @@ export default function KineticPixelBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Mouse tracking for hover particle scatter
+    // Mouse tracking for hover particle scatter & grid connection
     const mouse = {
       x: -1000,
       y: -1000,
-      radius: 160,
+      radius: 170,
       isActive: false,
+    };
+
+    // Active kinetic shockwaves
+    let shockwaves: Shockwave[] = [];
+
+    const triggerRipple = (clientX: number, clientY: number, power = 1) => {
+      shockwaves.push({
+        x: clientX,
+        y: clientY,
+        radius: 4,
+        maxRadius: Math.min(260 * power, 320),
+        speed: 7.5 * power,
+        alpha: 0.75,
+      });
+
+      // Cap concurrent shockwaves to keep 60fps
+      if (shockwaves.length > 5) {
+        shockwaves.shift();
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -52,8 +80,24 @@ export default function KineticPixelBackground() {
       mouse.isActive = false;
     };
 
+    const handlePointerDown = (e: MouseEvent) => {
+      // Create ripple on pointer click
+      triggerRipple(e.clientX, e.clientY, 1);
+    };
+
+    // Custom event listener so other components can dispatch kinetic ripples
+    const handleCustomPulse = (e: Event) => {
+      const customEvt = e as CustomEvent<{ x?: number; y?: number; power?: number }>;
+      const rx = customEvt.detail?.x ?? width / 2;
+      const ry = customEvt.detail?.y ?? height / 2;
+      const p = customEvt.detail?.power ?? 1.2;
+      triggerRipple(rx, ry, p);
+    };
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    window.addEventListener("kinetic:pulse", handleCustomPulse);
 
     const onResize = () => {
       if (!canvas) return;
@@ -125,7 +169,41 @@ export default function KineticPixelBackground() {
       ctx.fillStyle = beamLineColor;
       ctx.fillRect(scanBeamX, 0, 1, height);
 
-      // 3. Kinetic Pixels with Hover Scatter Physics
+      // 3. Render and advance Shockwave Ripples
+      for (let sIdx = shockwaves.length - 1; sIdx >= 0; sIdx--) {
+        const sw = shockwaves[sIdx];
+        sw.radius += sw.speed;
+        sw.alpha = Math.max(0, 1 - sw.radius / sw.maxRadius);
+
+        if (sw.radius >= sw.maxRadius || sw.alpha <= 0) {
+          shockwaves.splice(sIdx, 1);
+          continue;
+        }
+
+        const ringAlpha = isLight ? sw.alpha * 0.18 : sw.alpha * 0.45;
+        ctx.strokeStyle = `rgba(${pixelColor}, ${ringAlpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Push nearby particles with shockwave wave-front
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          const dx = p.x - sw.x;
+          const dy = p.y - sw.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const diff = Math.abs(dist - sw.radius);
+
+          if (diff < 30 && dist > 0) {
+            const push = ((30 - diff) / 30) * 4.5 * sw.alpha;
+            p.vx += (dx / dist) * push;
+            p.vy += (dy / dist) * push;
+          }
+        }
+      }
+
+      // 4. Kinetic Pixels with Hover Scatter Physics
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
@@ -140,7 +218,6 @@ export default function KineticPixelBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < mouse.radius && dist > 0) {
-            // Stronger repulsive force when mouse is close
             const force = (mouse.radius - dist) / mouse.radius;
             const angle = Math.atan2(dy, dx);
             const scatterPower = 8.5;
@@ -168,7 +245,7 @@ export default function KineticPixelBackground() {
           p.twinkleSpeed = -p.twinkleSpeed;
         }
 
-        // Gentle low-contrast alpha in light mode to prevent eye strain, crisp cybernetic alpha in dark mode
+        // Gentle low-contrast alpha in light mode, crisp cybernetic alpha in dark mode
         const alpha = isLight
           ? Math.min(0.18, Math.max(0.04, p.opacity * 0.22))
           : Math.max(0.12, p.opacity);
@@ -184,6 +261,35 @@ export default function KineticPixelBackground() {
         );
       }
 
+      // 5. Proximity Constellation Grid Links near Cursor
+      if (mouse.isActive) {
+        const linkDistance = 70;
+        const activeRadius = mouse.radius + 30;
+
+        for (let i = 0; i < particles.length; i++) {
+          const p1 = particles[i];
+          const distToMouse = Math.hypot(p1.x - mouse.x, p1.y - mouse.y);
+          if (distToMouse > activeRadius) continue;
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < linkDistance) {
+              const lineAlpha = (1 - dist / linkDistance) * (isLight ? 0.08 : 0.22);
+              ctx.strokeStyle = `rgba(${pixelColor}, ${lineAlpha})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(Math.floor(p1.x), Math.floor(p1.y));
+              ctx.lineTo(Math.floor(p2.x), Math.floor(p2.y));
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
       animationId = requestAnimationFrame(render);
     };
 
@@ -193,6 +299,8 @@ export default function KineticPixelBackground() {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("kinetic:pulse", handleCustomPulse);
       cancelAnimationFrame(animationId);
     };
   }, []);
