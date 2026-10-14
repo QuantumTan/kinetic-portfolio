@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import AudioToggle from "@/components/ui/AudioToggle";
 import { sound } from "@/utils/sound";
@@ -11,6 +12,7 @@ const NAV_ITEMS = [
   { id: "projects", label: "PROJECTS" },
   { id: "certifications", label: "CERTS" },
   { id: "education", label: "EDU" },
+  { id: "mentorship", label: "MENTOR" },
   { id: "contact", label: "CONTACT" },
 ];
 
@@ -48,13 +50,13 @@ export default function Navbar() {
         {/* LOGO */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
-          <a
-            href="#home"
+          <Link
+            href="/#home"
             onClick={closeMenu}
             className="font-pixel text-[0.65rem] sm:text-xs text-[var(--color-text)] tracking-wider hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] px-1.5 py-1 transition-colors border border-transparent hover:border-[var(--color-border)] whitespace-nowrap min-h-[36px] inline-flex items-center"
           >
             JONATHAN_PEGUIT [DEV]
-          </a>
+          </Link>
         </div>
 
         {/* DESKTOP NAVIGATION LINKS */}
@@ -62,9 +64,9 @@ export default function Navbar() {
           {NAV_ITEMS.map(({ id, label }) => {
             const isActive = active === id;
             return (
-              <a
+              <Link
                 key={id}
-                href={`#${id}`}
+                href={`/#${id}`}
                 onClick={() => sound.playClick()}
                 className={`font-pixel text-[0.65rem] tracking-wider px-2 py-1.5 transition-all duration-100 whitespace-nowrap min-h-[36px] inline-flex items-center ${
                   isActive
@@ -73,7 +75,7 @@ export default function Navbar() {
                 }`}
               >
                 [{label}]
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -120,9 +122,9 @@ export default function Navbar() {
             {NAV_ITEMS.map(({ id, label }) => {
               const isActive = active === id;
               return (
-                <a
+                <Link
                   key={id}
-                  href={`#${id}`}
+                  href={`/#${id}`}
                   onClick={closeMenu}
                   className={`p-3 border min-h-[44px] flex items-center transition-colors ${
                     isActive
@@ -131,7 +133,7 @@ export default function Navbar() {
                   }`}
                 >
                   &gt; [{label}]
-                </a>
+                </Link>
               );
             })}
             <a

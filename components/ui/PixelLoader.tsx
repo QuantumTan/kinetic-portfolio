@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const BOOT_LOGS = [
   "SYS_BOOT: INITIALIZING QUANTUM_CORE v2.7...",
@@ -15,19 +15,30 @@ export default function PixelLoader({ onComplete }: { onComplete: () => void }) 
   const [logIndex, setLogIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
+  const dismissLoader = useCallback(() => {
+    setIsFading(true);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("portfolio_booted", "true");
+    }
+    setTimeout(onComplete, 180);
+  }, [onComplete]);
+
   useEffect(() => {
-    // Progress tick
+    // Check if user already booted this session
+    if (typeof window !== "undefined" && sessionStorage.getItem("portfolio_booted") === "true") {
+      onComplete();
+      return;
+    }
+
+    // Fast, responsive progress tick (completes in ~250ms without blocking recruiters)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => {
-            setIsFading(true);
-            setTimeout(onComplete, 350);
-          }, 200);
+          setTimeout(dismissLoader, 100);
           return 100;
         }
-        const increment = Math.floor(Math.random() * 18) + 8;
+        const increment = Math.floor(Math.random() * 25) + 20;
         const next = Math.min(100, prev + increment);
         if (next > 25 && next <= 50) setLogIndex(1);
         else if (next > 50 && next <= 75) setLogIndex(2);
@@ -35,10 +46,23 @@ export default function PixelLoader({ onComplete }: { onComplete: () => void }) 
         else if (next === 100) setLogIndex(4);
         return next;
       });
-    }, 65);
+    }, 28);
 
-    return () => clearInterval(interval);
-  }, [onComplete]);
+    // Allow user or recruiter to skip instantly on any click or keypress
+    const handleInstantSkip = () => {
+      clearInterval(interval);
+      dismissLoader();
+    };
+
+    window.addEventListener("keydown", handleInstantSkip);
+    window.addEventListener("click", handleInstantSkip);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("keydown", handleInstantSkip);
+      window.removeEventListener("click", handleInstantSkip);
+    };
+  }, [onComplete, dismissLoader]);
 
   // Generate 20-character block progress bar
   const totalBlocks = 20;
@@ -48,10 +72,12 @@ export default function PixelLoader({ onComplete }: { onComplete: () => void }) 
 
   return (
     <div
-      className={`fixed inset-0 z-[99999] bg-black text-white flex flex-col items-center justify-center p-4 select-none transition-opacity duration-300 ${
+      onClick={dismissLoader}
+      className={`fixed inset-0 z-[99999] bg-black text-white flex flex-col items-center justify-center p-4 select-none transition-opacity duration-200 cursor-pointer ${
         isFading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       style={{ imageRendering: "pixelated" }}
+      title="Click or press any key to skip boot screen"
     >
       {/* SCANLINE OVERLAY */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none" />
@@ -62,7 +88,7 @@ export default function PixelLoader({ onComplete }: { onComplete: () => void }) 
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-white inline-block animate-pulse" />
             <span className="font-pixel text-xs text-white tracking-wider">
-              SYS_LOADER // BOOT
+              SYS_LOADER // FAST_BOOT
             </span>
           </div>
           <span className="font-mono text-[0.65rem] text-neutral-400">
@@ -89,6 +115,11 @@ export default function PixelLoader({ onComplete }: { onComplete: () => void }) 
             <span>MEM_BUFFER: READY</span>
             <span className="text-white font-bold">{progress}%</span>
           </div>
+        </div>
+
+        {/* SKIP TIP */}
+        <div className="mt-4 pt-3 border-t border-dashed border-neutral-800 text-center font-mono text-[0.65rem] text-neutral-500">
+          [CLICK OR PRESS ANY KEY TO SKIP]
         </div>
       </div>
     </div>

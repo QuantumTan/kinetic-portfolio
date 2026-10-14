@@ -6,6 +6,8 @@ import { sound } from "@/utils/sound";
 import LayerDiagram from "./LayerDiagram";
 import SchemaInspector from "./SchemaInspector";
 import PipelineSimulator from "./PipelineSimulator";
+import ApiInspector from "./ApiInspector";
+import AdrViewer from "./AdrViewer";
 
 interface ArchitectureModalProps {
   isOpen: boolean;
@@ -13,7 +15,7 @@ interface ArchitectureModalProps {
   onClose: () => void;
 }
 
-type TabMode = "layers" | "schema" | "pipeline";
+type TabMode = "layers" | "schema" | "pipeline" | "api" | "adr";
 
 export default function ArchitectureModal({
   isOpen,
@@ -182,13 +184,39 @@ export default function ArchitectureModal({
               sound.playClick();
               setActiveTab("pipeline");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "pipeline"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
             [03 // REQUEST_PIPELINE]
+          </button>
+          <button
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("api");
+            }}
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+              activeTab === "api"
+                ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
+                : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
+            }`}
+          >
+            [04 // API_CONTRACTS]
+          </button>
+          <button
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("adr");
+            }}
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all min-h-[44px] flex items-center justify-center cursor-pointer ${
+              activeTab === "adr"
+                ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
+                : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
+            }`}
+          >
+            [05 // ADR_RECORDS]
           </button>
         </div>
 
@@ -197,6 +225,8 @@ export default function ArchitectureModal({
           {activeTab === "layers" && <LayerDiagram project={project} />}
           {activeTab === "schema" && <SchemaInspector project={project} />}
           {activeTab === "pipeline" && <PipelineSimulator project={project} />}
+          {activeTab === "api" && <ApiInspector projectId={project.id} />}
+          {activeTab === "adr" && <AdrViewer projectId={project.id} />}
         </div>
 
         {/* BOTTOM HUD ACTION FOOTER */}

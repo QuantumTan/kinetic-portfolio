@@ -715,4 +715,103 @@ public class DealsController(ISender mediator) : ControllerBase
       ],
     },
   },
+  portfolio: {
+    id: "portfolio",
+    code: "ARCH-04",
+    name: "KINETIC_CORE_PORTFOLIO (NEXT.JS 15 + GEMINI AI)",
+    pattern: "Edge Hybrid // Serverless LLM Proxy // Reactive Canvas",
+    stackSummary: "Next.js 15 (App Router) • React 19 • TypeScript • Tailwind CSS • GSAP 3 • Google Gemini AI",
+    description:
+      "A high-performance brutalist systems developer portfolio featuring server-side streaming AI copilot (TAN), custom hardware-accelerated canvas background, reactive state architecture, and accessible keyboard navigation.",
+    tanPrompt:
+      "Explain the architectural design of this kinetic portfolio, specifically how Next.js 15 App Router and the server-side Gemini AI proxy operate.",
+    layers: [
+      {
+        id: "edge-router",
+        name: "Next.js App Router & Edge Server",
+        tag: "app/api, app/layout",
+        tierNumber: "01",
+        responsibility:
+          "Manages SSR/SSG rendering, routing, JSON-LD structured schemas for search indexation, and secure server-side API proxying for Gemini LLM calls.",
+        keyPatterns: ["Server Components", "API Route Handlers", "JSON-LD Metadata", "Edge Rendering"],
+        dependencies: "Next.js 15, React 19, Google Generative AI SDK.",
+        directory: "app, app/api/chat",
+        highlights: ["Zero client-side API key leakage", "Edge-optimized route handlers", "Dynamic sitemap & robots generation"],
+      },
+      {
+        id: "kinetic-ui",
+        name: "Interactive Kinetic Presentation Layer",
+        tag: "components/ui, components/sections",
+        tierNumber: "02",
+        responsibility:
+          "Renders HUD brutalist interfaces, lerp custom cursor, 60fps canvas particles, and smooth GSAP timelines.",
+        keyPatterns: ["GSAP Timelines", "Custom Event Dispatching", "Client Components", "Accessible Keyboard Traps"],
+        dependencies: "GSAP 3, @gsap/react, Tailwind CSS.",
+        directory: "components/sections, components/ui",
+        highlights: ["Monochrome dark/light design tokens", "Custom keyboard event bus", "Full mobile touch & screen reader support"],
+      },
+      {
+        id: "ai-copilot",
+        name: "Autonomous Terminal Copilot (TAN)",
+        tag: "components/chatbot",
+        tierNumber: "03",
+        responsibility:
+          "Client-side chat interface and prompt engineering bridge grounded in Jonathan's verified knowledge base.",
+        keyPatterns: ["System Prompt Grounding", "Streaming State Machine", "Context History Maintenance"],
+        dependencies: "Grounded in data/knowledge-base.ts.",
+        directory: "components/chatbot, data/knowledge-base.ts",
+        highlights: ["Zero hallucination guardrails", "Architecture exploration dispatching", "Full offline fallback messages"],
+      },
+    ],
+    tables: [
+      {
+        name: "client_state_tokens",
+        description: "Local storage persistence and session tokens for preferences and theme modes.",
+        columns: [
+          { name: "theme_preference", type: "varchar(10)", constraints: ["'DARK'", "'LIGHT'"] },
+          { name: "audio_muted", type: "boolean", constraints: ["DEFAULT true"] },
+          { name: "neko_mode", type: "varchar(10)", constraints: ["'ACTIVE'", "'SLEEP'", "'HIDDEN'"] },
+          { name: "chat_history", type: "json", constraints: ["IN_MEMORY / EPHEMERAL"] },
+        ],
+      },
+    ],
+    pipeline: {
+      title: "TAN Copilot Query-to-Inference Lifecycle",
+      triggerEndpoint: "POST /api/chat",
+      steps: [
+        {
+          step: 1,
+          label: "Input Sanitization & Rate Limit",
+          layer: "API Route Gateway",
+          status: "OK",
+          description: "Validates incoming prompt length, strips malicious tokens, and verifies client request rate.",
+          telemetry: "PROMPT_LENGTH: 48 CHARS // RATE_LIMIT: 20 REQ/MIN [PASS]",
+        },
+        {
+          step: 2,
+          label: "Context Grounding Injection",
+          layer: "Knowledge Base Engine",
+          status: "VALIDATED",
+          description: "Injects Jonathan's curated knowledge base (.NET Clean Arch, Laravel 12, Certifications) into system instructions.",
+          telemetry: "KB_TOKENS: 1,420 // MODEL: GEMINI-2.0-FLASH",
+        },
+        {
+          step: 3,
+          label: "Server-Side Gemini Inference",
+          layer: "Google AI Backend",
+          status: "PROCESSING",
+          description: "Proxies request to Google Generative AI API securely without exposing API keys to client bundle.",
+          telemetry: "STREAM_LATENCY: 420MS // ENCODING: UTF-8",
+        },
+        {
+          step: 4,
+          label: "Response Stream & Render",
+          layer: "Client Terminal Copilot",
+          status: "COMMITTED",
+          description: "Streams response tokens into typewriter terminal bubble and registers action triggers.",
+          telemetry: "TOKENS_GENERATED: 114 // STATUS: 200 OK",
+        },
+      ],
+    },
+  },
 };

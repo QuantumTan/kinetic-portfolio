@@ -1,41 +1,103 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { sound } from "@/utils/sound";
 
-const SKILLS = [
-  { name: "LARAVEL 12 & PHP", src: "/assets/icons/java-icon.png", spec: "FULL-STACK / MVC ARCHITECTURE", tag: "FULLSTACK", query: "Laravel" },
-  { name: "BLADE TEMPLATES", src: "/assets/icons/html-icon.png", spec: "DYNAMIC VIEWS & COMPONENTS", tag: "FRONTEND", query: "Blade" },
-  { name: "BOOTSTRAP 5", src: "/assets/icons/css-icon.png", spec: "RESPONSIVE UI & GRID SYSTEM", tag: "FRONTEND", query: "Bootstrap" },
-  { name: "C# .NET 8", src: "/assets/icons/java-icon.png", spec: "CLEAN ARCHITECTURE / REST APIs", tag: "BACKEND", query: ".NET" },
-  { name: "JAVA (OOP)", src: "/assets/icons/java-icon.png", spec: "ALGORITHMS & DATA STRUCTURES", tag: "CORE", query: "Java" },
-  { name: "PYTHON", src: "/assets/icons/py-icon.png", spec: "AUTOMATION & DATA LOGIC", tag: "CORE", query: "Python" },
-  { name: "TYPESCRIPT & NEXT.JS", src: "/assets/icons/html-icon.png", spec: "SSR / REACT APP ROUTER", tag: "FULLSTACK", query: "Next.js" },
-  { name: "HTML5 & CSS3", src: "/assets/icons/css-icon.png", spec: "SEMANTIC PIXEL PRECISION", tag: "FRONTEND", query: "CSS" },
-  { name: "MYSQL", src: "/assets/icons/mysql-icon.png", spec: "RELATIONAL SCHEMA & QUERIES", tag: "DATABASE", query: "MySQL" },
-  { name: "GIT & GITHUB", src: "/assets/icons/github-icon.png", spec: "VERSION CONTROL & CI/CD", tag: "TOOLING", query: "Git" },
-];
+interface SkillItem {
+  name: string;
+  query: string;
+  spec: string;
+  highlight?: boolean;
+}
 
-const MOBILE_INITIAL_COUNT = 4;
+interface SkillTier {
+  tierNumber: string;
+  layerName: string;
+  roleScope: string;
+  badge: string;
+  skills: SkillItem[];
+}
+
+const SKILL_TIERS: SkillTier[] = [
+  {
+    tierNumber: "01",
+    layerName: "CORE_LANGUAGES_&_RUNTIMES",
+    badge: "TIER_01 // RUNTIME",
+    roleScope: "Strict typing, OOP algorithms, memory lifecycle & asynchronous concurrency.",
+    skills: [
+      { name: "C# (.NET 8)", query: ".NET", spec: "OOP, Generics, LINQ, Async/Await", highlight: true },
+      { name: "PHP 8.2+", query: "Laravel", spec: "Strict Types, Attributes, Enums", highlight: true },
+      { name: "JAVA (OOP)", query: "Java", spec: "Design Patterns, Collections, Concurrency" },
+      { name: "TYPESCRIPT", query: "Next.js", spec: "Static Type Invariants, Interfaces" },
+      { name: "PYTHON", query: "Python", spec: "Data Logic, Scripting, Automation" },
+    ],
+  },
+  {
+    tierNumber: "02",
+    layerName: "ENTERPRISE_ARCHITECTURE_&_FRAMEWORKS",
+    badge: "TIER_02 // SYSTEM_ARCH",
+    roleScope: "Domain boundaries, CQRS pipelines, RESTful controllers & middleware.",
+    skills: [
+      { name: "CLEAN ARCHITECTURE / DDD", query: ".NET", spec: "Domain Invariants, Inversion of Control", highlight: true },
+      { name: "ASP.NET CORE WEB API", query: ".NET", spec: "REST Controllers, Filters, JWT Auth", highlight: true },
+      { name: "LARAVEL 12 PLATFORMS", query: "Laravel", spec: "MVC, FormRequests, Spatie RBAC, Gates", highlight: true },
+      { name: "NEXT.JS 15 (APP ROUTER)", query: "Next.js", spec: "Server Components, Server Actions, SSR" },
+    ],
+  },
+  {
+    tierNumber: "03",
+    layerName: "PERSISTENCE_&_DATA_MODELING",
+    badge: "TIER_03 // DATA_STORE",
+    roleScope: "Relational schema design, migrations, ACID transactions & ORM mapping.",
+    skills: [
+      { name: "ENTITY FRAMEWORK CORE", query: ".NET", spec: "Code-First Migrations, Fluent API, Linq", highlight: true },
+      { name: "SQL SERVER", query: ".NET", spec: "Relational Schemas, Constraints, Foreign Keys" },
+      { name: "MYSQL", query: "MySQL", spec: "Indexing, Normalization, Query Optimization", highlight: true },
+      { name: "ELOQUENT ORM", query: "Laravel", spec: "Active Record, Eager Loading, Model Events" },
+    ],
+  },
+  {
+    tierNumber: "04",
+    layerName: "INTERFACE_&_PRESENTATION_ENGINE",
+    badge: "TIER_04 // UI_CLIENT",
+    roleScope: "Dynamic server-rendered views, responsive viewport engines & kinetic motion.",
+    skills: [
+      { name: "BLADE TEMPLATES", query: "Blade", spec: "Component Slots, View Directives, Layouts", highlight: true },
+      { name: "BOOTSTRAP 5", query: "Bootstrap", spec: "Enterprise Grid System, Modals, Forms" },
+      { name: "TAILWIND CSS V4", query: "Tailwind", spec: "Utility-First Styling, Custom Design Tokens" },
+      { name: "GSAP MOTION ENGINE", query: "GSAP", spec: "Kinetic Timelines, SVG Animations" },
+    ],
+  },
+  {
+    tierNumber: "05",
+    layerName: "TOOLING,_TESTING_&_DEVOPS",
+    badge: "TIER_05 // CI_CD",
+    roleScope: "Version control pipelines, automated test coverage & build tooling.",
+    skills: [
+      { name: "GIT & GITHUB ACTIONS", query: "Git", spec: "Branching Strategies, CI/CD Automated Pipelines" },
+      { name: "PEST PHP", query: "Pest", spec: "Unit & Feature Test Suites, Assertions", highlight: true },
+      { name: "POSTMAN / REST SUITE", query: "REST", spec: "API Contract Validation, Mock Environments" },
+      { name: "VITE & COMPILER", query: "Vite", spec: "Asset Compilation, Bundling, Hot Reload" },
+    ],
+  },
+];
 
 export default function Skills() {
   const container = useRef<HTMLDivElement>(null);
-  const [showAllMobile, setShowAllMobile] = useState(false);
   const [activeSkillQuery, setActiveSkillQuery] = useState<string | null>(null);
 
   useGSAP(
     () => {
       if (!container.current) return;
       gsap.fromTo(
-        ".skill-matrix-item",
+        ".skill-tier-block",
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" }
       );
     },
-    { scope: container, dependencies: [showAllMobile] }
+    { scope: container }
   );
 
   const handleSkillClick = (query: string) => {
@@ -48,7 +110,7 @@ export default function Skills() {
           detail: { query },
         })
       );
-      // Smooth scroll to projects
+      // Smooth scroll to projects section
       const target = document.getElementById("projects");
       if (target) {
         target.scrollIntoView({ behavior: "smooth" });
@@ -56,93 +118,93 @@ export default function Skills() {
     }
   };
 
+  const totalSkillCount = SKILL_TIERS.reduce((acc, tier) => acc + tier.skills.length, 0);
+
   return (
-    <section id="skills" ref={container} className="section-card scroll-mt-[100px]">
+    <section id="skills" ref={container} className="section-card scroll-mt-[100px] w-full">
+      {/* SECTION HEADER & TELEMETRY */}
       <div className="flex flex-wrap items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-6 gap-2">
         <div>
-          <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
-            01 // SKILLS_MATRIX & TOOLCHAIN
-          </h2>
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 bg-[var(--color-text)] inline-block animate-pulse" />
+            <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
+              01 // ARCHITECTURAL_SYSTEM_STACK
+            </h2>
+          </div>
           <p className="font-mono text-[0.6rem] sm:text-xs text-[var(--color-text-dim)] mt-0.5">
-            [CLICK ANY STACK ITEM TO HIGHLIGHT ASSOCIATED REPOSITORIES]
+            [5-TIER ENGINEERING HIERARCHY // CLICK ANY BADGE TO INSPECT MATCHED REPOSITORIES]
           </p>
         </div>
-        <span className="font-mono text-xs text-[var(--color-text-dim)]">
-          <span className="sm:hidden">
-            [{showAllMobile ? `${SKILLS.length}/${SKILLS.length}` : `${MOBILE_INITIAL_COUNT}/${SKILLS.length}`}]
-          </span>
-          <span className="hidden sm:inline">[TOTAL: {SKILLS.length}]</span>
-        </span>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {SKILLS.map((skill, index) => {
-          const isHiddenOnMobile = !showAllMobile && index >= MOBILE_INITIAL_COUNT;
-          const isSelected = activeSkillQuery === skill.query;
-
-          return (
-            <button
-              type="button"
-              key={skill.name}
-              onClick={() => handleSkillClick(skill.query)}
-              className={`skill-matrix-item pixel-box p-3.5 sm:p-4 text-left flex flex-col justify-between group transition-all duration-150 min-h-[110px] sm:min-h-[120px] cursor-pointer ${
-                isSelected
-                  ? "border-[var(--color-text)] bg-[var(--color-surface)] shadow-[4px_4px_0px_var(--color-text)]"
-                  : "hover:border-[var(--color-text)] hover:shadow-[4px_4px_0px_var(--color-border)]"
-              } ${isHiddenOnMobile ? "hidden sm:flex" : "flex"}`}
-            >
-              <div className="flex items-center justify-between mb-3 w-full">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 border border-[var(--color-border)] p-1 bg-[var(--color-surface)] flex items-center justify-center grayscale contrast-125 group-hover:grayscale-0 transition-all">
-                  <Image
-                    src={skill.src}
-                    alt={skill.name}
-                    width={28}
-                    height={28}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="flex items-center gap-1">
-                  {isSelected && (
-                    <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping mr-1" />
-                  )}
-                  <span className="pixel-tag text-[0.55rem] sm:text-[0.6rem] font-pixel">
-                    {skill.tag}
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-pixel text-[0.7rem] sm:text-xs text-[var(--color-text)] group-hover:underline mb-1 flex items-center justify-between">
-                  <span>{skill.name}</span>
-                  <span className="font-mono text-[0.6rem] text-[var(--color-text-dim)] group-hover:text-[var(--color-text)] opacity-60 group-hover:opacity-100">
-                    ↳ VIEW
-                  </span>
-                </h3>
-                <p className="font-mono text-[0.65rem] sm:text-[0.7rem] text-[var(--color-text-dim)]">
-                  {skill.spec}
-                </p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* MOBILE-ONLY SEE MORE TOGGLE */}
-      {SKILLS.length > MOBILE_INITIAL_COUNT && (
-        <div className="sm:hidden mt-6 pt-4 border-t border-dashed border-[var(--color-border)] flex justify-center">
-          <button
-            onClick={() => {
-              sound.playClick();
-              setShowAllMobile((prev) => !prev);
-            }}
-            className="pixel-btn text-xs px-5 py-2.5 w-full text-center transition-all min-h-[44px]"
-          >
-            {showAllMobile
-              ? "[-] COLLAPSE_TOOLS"
-              : `[+] VIEW_ALL_TOOLS (+${SKILLS.length - MOBILE_INITIAL_COUNT}_MORE)`}
-          </button>
+        <div className="flex items-center gap-2 font-mono text-xs text-[var(--color-text-dim)]">
+          <span className="text-[var(--color-text)] font-bold">[5 TIERS]</span>
+          <span>//</span>
+          <span>[{totalSkillCount} TECHNOLOGIES]</span>
         </div>
-      )}
+      </div>
+
+      {/* 5-TIER ARCHITECTURAL SHELF STACK (ZERO TRUNCATION) */}
+      <div className="flex flex-col gap-4 sm:gap-5 w-full">
+        {SKILL_TIERS.map((tier) => (
+          <div
+            key={tier.tierNumber}
+            className="skill-tier-block pixel-box p-4 sm:p-5 bg-[var(--color-surface)] border-2 border-[var(--color-border)] hover:border-[var(--color-text)] transition-colors"
+          >
+            {/* TIER HEADER */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-3 mb-3 border-b border-[var(--color-border)]">
+              <div className="flex items-center gap-2">
+                <span className="font-pixel text-[0.65rem] sm:text-xs bg-[var(--color-card)] px-2 py-0.5 border border-[var(--color-border)] text-[var(--color-text)]">
+                  {tier.badge}
+                </span>
+                <h3 className="font-pixel text-xs sm:text-sm text-[var(--color-text)] uppercase tracking-wide">
+                  {tier.layerName}
+                </h3>
+              </div>
+              <p className="font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
+                {tier.roleScope}
+              </p>
+            </div>
+
+            {/* TECHNOLOGY BADGE CHIPS GRID */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              {tier.skills.map((skill) => {
+                const isSelected = activeSkillQuery === skill.query;
+                return (
+                  <button
+                    type="button"
+                    key={skill.name}
+                    onClick={() => handleSkillClick(skill.query)}
+                    className={`text-left p-2.5 sm:p-3 border transition-all min-h-[44px] cursor-pointer flex flex-col justify-between group ${
+                      isSelected
+                        ? "border-[var(--color-text)] bg-[var(--color-card)] shadow-[3px_3px_0px_var(--color-text)]"
+                        : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-text)] hover:shadow-[2px_2px_0px_var(--color-border)]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1 mb-1">
+                      <span className="font-pixel text-[0.65rem] sm:text-xs text-[var(--color-text)] group-hover:underline flex items-center gap-1.5">
+                        {isSelected && (
+                          <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping" />
+                        )}
+                        {skill.name}
+                      </span>
+                      {skill.highlight && (
+                        <span className="font-pixel text-[0.5rem] bg-[var(--color-surface)] border border-[var(--color-border)] px-1 py-0.2 text-[var(--color-text)]">
+                          [CORE]
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between font-mono text-[0.6rem] text-[var(--color-text-dim)]">
+                      <span className="truncate pr-1">{skill.spec}</span>
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[var(--color-text)] shrink-0 font-bold">
+                        ↳ FILTER
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
