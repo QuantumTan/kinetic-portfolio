@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ChatWindow from "./ChatWindow";
+import { sound } from "@/utils/sound";
 
 export default function ChatTrigger() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function ChatTrigger() {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
+        sound.playClick();
         setIsOpen((prev) => !prev);
       }
       if (e.key === "Escape" && isOpen) {
@@ -29,6 +31,7 @@ export default function ChatTrigger() {
       if (customEvt.detail?.query) {
         setPendingPrompt(customEvt.detail.query);
       }
+      sound.playPing();
       setIsOpen(true);
     };
 
@@ -41,9 +44,12 @@ export default function ChatTrigger() {
       {/* FLOATING TERMINAL COPILOT TRIGGER BUTTON */}
       <button
         id="chat-trigger"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          sound.playClick();
+          setIsOpen((prev) => !prev);
+        }}
         aria-label="Open TAN AI Copilot"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9995] pixel-btn bg-[var(--color-surface)] text-[var(--color-text)] border-2 border-[var(--color-text)] shadow-[4px_4px_0px_var(--color-border)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 font-pixel text-[0.65rem] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 flex items-center gap-2 cursor-none"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9995] pixel-btn bg-[var(--color-surface)] text-[var(--color-text)] border-2 border-[var(--color-text)] shadow-[4px_4px_0px_var(--color-border)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 font-pixel text-[0.65rem] sm:text-xs py-2 px-3.5 sm:px-4 flex items-center gap-2 min-h-[44px]"
       >
         <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[var(--color-text)] inline-block animate-ping" />
         <span>[AI_COPILOT // TAN]</span>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ProjectArchitecture, ArchitectureLayer } from "@/data/architecture-data";
+import { sound } from "@/utils/sound";
 
 export default function LayerDiagram({ project }: { project: ProjectArchitecture }) {
   const [selectedLayerId, setSelectedLayerId] = useState<string>(
@@ -25,8 +26,11 @@ export default function LayerDiagram({ project }: { project: ProjectArchitecture
           return (
             <button
               key={layer.id}
-              onClick={() => setSelectedLayerId(layer.id)}
-              className={`text-left p-3 border-2 transition-all cursor-none ${
+              onClick={() => {
+                sound.playClick();
+                setSelectedLayerId(layer.id);
+              }}
+              className={`text-left p-3 border-2 transition-all min-h-[44px] cursor-pointer ${
                 isSelected
                   ? "border-[var(--color-text)] bg-[var(--color-surface)] shadow-[3px_3px_0px_var(--color-text)]"
                   : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-text-muted)] hover:bg-[var(--color-card-hover)]"

@@ -240,7 +240,7 @@ body.cursor-hover #cursor-ring {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .section-card {
-    margin: 20px 12px;
+    margin: 20px auto;
     padding: 20px 14px;
     box-shadow: 4px 4px 0px var(--color-border);
   }

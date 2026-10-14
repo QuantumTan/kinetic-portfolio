@@ -113,7 +113,10 @@ export default function KineticPixelBackground() {
 
     const initParticles = () => {
       particles = [];
-      const count = Math.min(220, Math.max(100, Math.floor((width * height) / 7500)));
+      const isMobile = width < 768;
+      const count = isMobile
+        ? Math.min(65, Math.max(35, Math.floor((width * height) / 9000)))
+        : Math.min(220, Math.max(90, Math.floor((width * height) / 7500)));
       for (let i = 0; i < count; i++) {
         const rand = Math.random();
         const size = rand > 0.88 ? 4 : rand > 0.5 ? 3 : 2;

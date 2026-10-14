@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+import { sound } from "@/utils/sound";
+
 const CERTS = [
   {
     title: "Information Technology Specialist: Java",
@@ -65,7 +67,7 @@ export default function Certifications() {
   );
 
   return (
-    <section id="certifications" ref={container} className="section-card">
+    <section id="certifications" ref={container} className="section-card scroll-mt-[100px]">
       <div className="flex flex-wrap items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-6 gap-2">
         <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
           03 // VERIFIED_CREDENTIALS
@@ -112,7 +114,8 @@ export default function Certifications() {
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="pixel-btn w-full text-center text-[0.6rem] sm:text-[0.65rem] py-2 block"
+                onClick={() => sound.playClick()}
+                className="pixel-btn w-full text-center text-[0.6rem] sm:text-[0.65rem] py-2 min-h-[44px] flex items-center justify-center"
               >
                 [&gt;] VERIFY_CREDENTIAL
               </a>
@@ -125,8 +128,11 @@ export default function Certifications() {
       {CERTS.length > INITIAL_VISIBLE_COUNT && (
         <div className="mt-8 pt-4 border-t border-dashed border-[var(--color-border)] flex justify-center">
           <button
-            onClick={() => setShowAll((prev) => !prev)}
-            className="pixel-btn text-xs px-6 py-2.5 transition-all"
+            onClick={() => {
+              sound.playClick();
+              setShowAll((prev) => !prev);
+            }}
+            className="pixel-btn text-xs px-6 py-2.5 transition-all min-h-[44px] w-full sm:w-auto"
           >
             {showAll
               ? "[-] COLLAPSE_CREDENTIALS"

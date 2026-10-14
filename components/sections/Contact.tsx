@@ -3,6 +3,7 @@
 import { useRef, useState, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { sound } from "@/utils/sound";
 
 interface PresetTopic {
   id: string;
@@ -127,6 +128,7 @@ export default function Contact() {
 
   // Copy helper
   const copyToClipboard = (text: string, key: string) => {
+    sound.playClick();
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2200);
@@ -145,6 +147,7 @@ export default function Contact() {
 
   // Handle Preset Selection
   const applyPreset = (preset: PresetTopic) => {
+    sound.playBlip();
     setSelectedTopic(preset.id);
     setSubject(preset.subject);
     setMessage(preset.template);
@@ -157,18 +160,22 @@ export default function Contact() {
     e.preventDefault();
 
     if (!senderName.trim()) {
+      sound.playClick();
       setValidationError("REQUIRED_FIELD: Please enter your name or organization identity.");
       return;
     }
     if (!senderSignal.trim()) {
+      sound.playClick();
       setValidationError("REQUIRED_FIELD: Please enter your return email or signal handle.");
       return;
     }
     if (!message.trim()) {
+      sound.playClick();
       setValidationError("REQUIRED_FIELD: Message payload cannot be empty.");
       return;
     }
 
+    sound.playClick();
     setValidationError(null);
     setDispatchStage("PACKETIZING");
     triggerKineticPulse(1.5);
@@ -179,6 +186,7 @@ export default function Contact() {
       triggerKineticPulse(1.1);
 
       setTimeout(() => {
+        sound.playSuccess();
         setDispatchStage("DISPATCHED");
         const receiptCode = `TX-${Math.floor(100000 + Math.random() * 900000)}`;
         setDispatchReceipt(receiptCode);
@@ -197,6 +205,7 @@ export default function Contact() {
   };
 
   const handleReset = () => {
+    sound.playClick();
     setDispatchStage("IDLE");
     setDispatchReceipt(null);
     setValidationError(null);
@@ -222,8 +231,11 @@ export default function Contact() {
           <span className="hidden sm:inline">[PORT_25: ESTABLISHED]</span>
           <button
             type="button"
-            onClick={() => triggerKineticPulse(1.5)}
-            className="pixel-btn text-[0.6rem] py-0.5 px-2 flex items-center gap-1.5"
+            onClick={() => {
+              sound.playPing();
+              triggerKineticPulse(1.5);
+            }}
+            className="pixel-btn text-[0.6rem] py-1 px-2.5 flex items-center gap-1.5 min-h-[36px] sm:min-h-0 cursor-pointer"
             title="Ping canvas radar"
           >
             <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping" />
@@ -292,7 +304,7 @@ export default function Contact() {
                     value={senderName}
                     onChange={(e) => setSenderName(e.target.value)}
                     placeholder="e.g. Jane Doe / Tech Recruiter"
-                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
+                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-[16px] sm:text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
                   />
                 </div>
 
@@ -309,7 +321,7 @@ export default function Contact() {
                     value={senderSignal}
                     onChange={(e) => setSenderSignal(e.target.value)}
                     placeholder="e.g. yourname@company.com"
-                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
+                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-[16px] sm:text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
                   />
                 </div>
               </div>
@@ -328,7 +340,7 @@ export default function Contact() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Subject of transmission..."
-                  className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
+                  className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] px-3 py-2 font-mono text-[16px] sm:text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none min-h-[44px] transition-colors"
                 />
               </div>
 
@@ -351,7 +363,7 @@ export default function Contact() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Enter message details..."
-                  className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] p-3 font-mono text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none leading-relaxed resize-y transition-colors"
+                  className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-border)] focus:border-[var(--color-text)] p-3 font-mono text-[16px] sm:text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] outline-none leading-relaxed resize-y transition-colors"
                 />
               </div>
 

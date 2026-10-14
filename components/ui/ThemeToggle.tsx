@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { sound } from "@/utils/sound";
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(true);
@@ -14,6 +15,7 @@ export default function ThemeToggle() {
   }, []);
 
   const toggle = () => {
+    sound.playClick();
     const next = !isDark;
     setIsDark(next);
     document.documentElement.classList.toggle("light", !next);
@@ -25,7 +27,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle monochrome palette"
-      className="pixel-btn font-pixel text-[0.65rem] px-2.5 sm:px-3 py-1 tracking-wider whitespace-nowrap shrink-0"
+      className="pixel-btn font-pixel text-[0.65rem] px-2.5 sm:px-3 py-1 tracking-wider whitespace-nowrap shrink-0 min-h-[44px] flex items-center justify-center cursor-pointer"
     >
       [ {isDark ? "THEME: DARK" : "THEME: LIGHT"} ]
     </button>

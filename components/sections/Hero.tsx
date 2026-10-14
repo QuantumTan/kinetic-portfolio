@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { sound } from "@/utils/sound";
 
 const ROLES = [
   "FULL_STACK_LARAVEL_DEVELOPER",
@@ -64,23 +65,24 @@ export default function Hero() {
     <section
       id="home"
       ref={container}
-      className="relative w-full max-w-[1200px] mx-auto pt-6 sm:pt-8 pb-8 sm:pb-12 flex flex-col justify-center scroll-mt-[100px]"
+      className="relative w-full max-w-[1200px] mx-auto pt-4 sm:pt-8 pb-6 sm:pb-12 flex flex-col justify-center scroll-mt-[100px]"
     >
       {/* TOP TELEMETRY STRIP */}
-      <div className="hero-hud-badge mt-3 sm:mt-5 flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
+      <div className="hero-hud-badge mt-2 sm:mt-5 flex flex-wrap items-center justify-between gap-2 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 sm:p-3 mb-5 sm:mb-6 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)]">
         <button
           type="button"
           onClick={() => {
+            sound.playPing();
             if (typeof window !== "undefined") {
               window.dispatchEvent(new CustomEvent("kinetic:pulse", { detail: { power: 1.3 } }));
             }
           }}
-          className="flex items-center gap-2 hover:opacity-85 transition-opacity cursor-pointer"
+          className="flex items-center gap-2 hover:opacity-85 transition-opacity cursor-pointer min-h-[36px]"
           title="Emit radar ping pulse"
         >
           <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
           <span className="font-pixel text-[0.6rem] sm:text-[0.65rem] text-[var(--color-text)]">
-            SYSTEM_STATUS: ONLINE // VER 2.7 [PING]
+            SYSTEM_STATUS: ONLINE // VER 2.7 [PING ⚡]
           </span>
         </button>
         <div>
@@ -91,15 +93,15 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+      <div className="grid lg:grid-cols-12 gap-5 sm:gap-8 items-stretch">
         {/* ── LEFT COLUMN ── */}
         <div className="lg:col-span-7 flex flex-col justify-between gap-4 sm:gap-5">
-          {/* ROCK-SOLID STABLE PIXEL TITLE (NO SHAKING / GLITCHING) */}
-          <div className="hero-title-box pixel-box p-5 sm:p-7 relative group transition-all">
+          {/* ROCK-SOLID STABLE PIXEL TITLE */}
+          <div className="hero-title-box pixel-box p-4 sm:p-7 relative group transition-all">
             <div className="text-[0.65rem] sm:text-xs font-mono text-[var(--color-text-dim)] mb-2">
               // OPERATOR: QUANTUM_TAN [SYS_DEV]
             </div>
-            <h1 className="font-pixel text-lg sm:text-2xl md:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-normal uppercase select-none break-words py-1.5">
+            <h1 className="font-pixel text-xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-snug sm:leading-normal uppercase select-none break-words py-1">
               JONATHAN PEGUIT JR.
             </h1>
             <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--color-border)] flex flex-wrap items-center gap-2 font-pixel text-[0.65rem] sm:text-xs text-[var(--color-text-muted)]">
@@ -114,7 +116,7 @@ export default function Hero() {
           {/* BIO TERMINAL PARAGRAPH */}
           <div className="pixel-box p-4 sm:p-5 font-mono text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed">
             <span className="text-[var(--color-text)] font-bold">INFO_LOG: </span>
-           I'm an Information Technology student, mentor, and student organization officer at the University of Mindanao who enjoys learning and sharing new things through code. I'm still growing my skills in Networking, web development, and problem-solving, and I find joy in helping fellow students along the way. Always eager to learn and improve.
+            I'm an Information Technology student, peer mentor, and student organization officer at the University of Mindanao who enjoys engineering robust enterprise backend systems and full-stack platforms. Focused on high-standard architectures (.NET 8 Clean Architecture, Laravel 12, Java OOP), clean code craftsmanship, and helping fellow developers grow.
           </div>
 
           {/* STATS MATRIX */}
@@ -135,20 +137,22 @@ export default function Hero() {
           </div>
 
           {/* ACTIONS & DISPATCH BUTTONS */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 pt-1">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 pt-1">
             <a
               href="/assets/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs"
+              onClick={() => sound.playClick()}
+              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs min-h-[44px] text-center flex items-center justify-center"
             >
-              [+] GET_RESUME_PDF
+              [+] GET_RESUME
             </a>
             <a
               href="https://github.com/QuantumTan"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs"
+              onClick={() => sound.playClick()}
+              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs min-h-[44px] text-center flex items-center justify-center"
             >
               [#] GITHUB
             </a>
@@ -156,13 +160,15 @@ export default function Hero() {
               href="https://www.linkedin.com/in/jonathan-jr-peguit-a446ba1b8/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs"
+              onClick={() => sound.playClick()}
+              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs min-h-[44px] text-center flex items-center justify-center"
             >
               [IN] LINKEDIN
             </a>
             <a
               href="mailto:jonathanjrhayo@gmail.com"
-              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs"
+              onClick={() => sound.playClick()}
+              className="hero-action-btn pixel-btn text-[0.65rem] sm:text-xs min-h-[44px] text-center flex items-center justify-center"
             >
               [@] EMAIL_ME
             </a>
@@ -171,7 +177,7 @@ export default function Hero() {
 
         {/* ── RIGHT COLUMN: PIXEL TELEMETRY MODULE ── */}
         <div className="lg:col-span-5 flex flex-col justify-between">
-          <div className="hero-telemetry-box pixel-box p-5 sm:p-6 bg-[var(--color-surface)] h-full flex flex-col justify-between font-mono text-xs">
+          <div className="hero-telemetry-box pixel-box p-4 sm:p-6 bg-[var(--color-surface)] h-full flex flex-col justify-between font-mono text-xs">
             {/* TERMINAL HEADER */}
             <div className="flex items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-4">
               <span className="font-pixel text-[0.7rem] text-[var(--color-text)]">
@@ -183,7 +189,7 @@ export default function Hero() {
             </div>
 
             {/* TELEMETRY METRICS */}
-            <div className="space-y-3 py-2 text-[0.7rem] sm:text-xs">
+            <div className="space-y-2.5 sm:space-y-3 py-1 sm:py-2 text-[0.7rem] sm:text-xs">
               <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
                 <span className="text-[var(--color-text-dim)]">SYSTEM_HEALTH:</span>
                 <span className="text-[var(--color-text)] font-bold">100% NOMINAL</span>
@@ -206,21 +212,22 @@ export default function Hero() {
               </div>
               <div className="flex justify-between border-b border-dashed border-[var(--color-border)] pb-2">
                 <span className="text-[var(--color-text-dim)]">LEADERSHIP / ROLE:</span>
-                <span className="text-[var(--color-text)]">STUDENT ORG OFFICER & MENTOR</span>
+                <span className="text-[var(--color-text)]">PEER MENTOR & ORG OFFICER</span>
               </div>
             </div>
 
             {/* BOTTOM STATUS HINT */}
-            <div className="mt-4 pt-3 border-t-2 border-[var(--color-border)] text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t-2 border-[var(--color-border)] text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] flex flex-wrap items-center justify-between gap-2">
               <span>ACTIVE_STATUS:</span>
               <a
                 href="#contact"
                 onClick={() => {
+                  sound.playClick();
                   if (typeof window !== "undefined") {
                     window.dispatchEvent(new CustomEvent("kinetic:pulse", { detail: { power: 1.4 } }));
                   }
                 }}
-                className="font-pixel bg-[var(--color-invert-bg)] text-[var(--color-invert-text)] border border-[var(--color-border)] px-2.5 py-1 hover:opacity-85 transition-opacity inline-flex items-center gap-1.5 cursor-pointer"
+                className="font-pixel bg-[var(--color-invert-bg)] text-[var(--color-invert-text)] border border-[var(--color-border)] px-3 py-1.5 min-h-[36px] hover:opacity-85 transition-opacity inline-flex items-center gap-1.5 cursor-pointer"
                 title="Jump to Communications Dispatch"
               >
                 <span className="w-1.5 h-1.5 bg-[var(--color-invert-text)] inline-block animate-ping" />

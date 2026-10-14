@@ -47,7 +47,7 @@ export default function Education() {
   );
 
   return (
-    <section id="education" ref={container} className="section-card">
+    <section id="education" ref={container} className="section-card scroll-mt-[100px]">
       <div className="flex flex-wrap items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-6 gap-2">
         <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
           04 // ACADEMIC_TRAJECTORY

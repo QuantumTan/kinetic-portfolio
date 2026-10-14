@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ProjectArchitecture, PipelineStep } from "@/data/architecture-data";
+import { sound } from "@/utils/sound";
 
 export default function PipelineSimulator({ project }: { project: ProjectArchitecture }) {
   const { pipeline } = project;
@@ -14,6 +15,7 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
     let timer: NodeJS.Timeout;
     if (isAutoPlaying) {
       timer = setInterval(() => {
+        sound.playBlip();
         setCurrentStepIndex((prev) => (prev + 1) % pipeline.steps.length);
       }, 2500);
     }
@@ -27,16 +29,19 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
   }, [project.id]);
 
   const handleNext = () => {
+    sound.playClick();
     setIsAutoPlaying(false);
     setCurrentStepIndex((prev) => (prev + 1) % pipeline.steps.length);
   };
 
   const handlePrev = () => {
+    sound.playClick();
     setIsAutoPlaying(false);
     setCurrentStepIndex((prev) => (prev === 0 ? pipeline.steps.length - 1 : prev - 1));
   };
 
   const handleReset = () => {
+    sound.playClick();
     setIsAutoPlaying(false);
     setCurrentStepIndex(0);
   };
@@ -89,10 +94,11 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
             <button
               key={step.step}
               onClick={() => {
+                sound.playClick();
                 setIsAutoPlaying(false);
                 setCurrentStepIndex(idx);
               }}
-              className={`p-2 border text-left flex flex-col justify-between transition-all cursor-none ${
+              className={`p-2 border text-left flex flex-col justify-between transition-all min-h-[44px] cursor-pointer ${
                 isActive
                   ? "border-[var(--color-text)] bg-[var(--color-surface)] shadow-[2px_2px_0px_var(--color-text)]"
                   : isPassed
@@ -164,32 +170,35 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
 
         {/* CONTROLS */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--color-border)]">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={handlePrev}
-              className="pixel-btn text-[0.65rem] sm:text-xs py-1.5 px-3"
+              className="pixel-btn text-[0.65rem] sm:text-xs py-2 px-3 min-h-[44px] cursor-pointer"
             >
               [&lt;] PREV_STEP
             </button>
             <button
               onClick={handleNext}
-              className="pixel-btn text-[0.65rem] sm:text-xs py-1.5 px-3"
+              className="pixel-btn text-[0.65rem] sm:text-xs py-2 px-3 min-h-[44px] cursor-pointer"
             >
               [&gt;] NEXT_STEP
             </button>
             <button
               onClick={handleReset}
-              className="font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-2 py-1.5 cursor-none"
+              className="font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-3 py-2 min-h-[44px] flex items-center cursor-pointer"
             >
               [RESET]
             </button>
           </div>
 
           <button
-            onClick={() => setIsAutoPlaying((prev) => !prev)}
-            className={`font-pixel text-[0.6rem] sm:text-[0.65rem] py-1.5 px-3 border transition-all cursor-none ${
+            onClick={() => {
+              sound.playBlip();
+              setIsAutoPlaying((prev) => !prev);
+            }}
+            className={`font-pixel text-[0.6rem] sm:text-[0.65rem] py-2 px-3.5 border transition-all min-h-[44px] flex items-center cursor-pointer ${
               isAutoPlaying
-                ? "border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-surface)]"
+                ? "border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-surface)] font-bold shadow-[2px_2px_0px_var(--color-border)]"
                 : "border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] hover:border-[var(--color-text-dim)]"
             }`}
           >

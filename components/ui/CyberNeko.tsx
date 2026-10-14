@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { sound } from "@/utils/sound";
 
 type NekoState = "WALK" | "SIT" | "SLEEP" | "ALERT" | "PURR";
 type Edge = "TOP" | "RIGHT" | "BOTTOM" | "LEFT";
@@ -9,12 +10,15 @@ type Edge = "TOP" | "RIGHT" | "BOTTOM" | "LEFT";
 const SPEECH_QUOTES = [
   "[^._.^] *PURR* DAEMON ONLINE",
   "[SYS] REPO_WATCHDOG PATROLLING",
-  "[=^o.o^=] MEOW // ZERO ERRORS",
-  "[NEKO] CLEAN_ARCH IS PURRFECT",
+  "[=^o.o^=] MEOW // ZERO COMPILATION ERRORS",
+  "[NEKO] CLEAN_ARCH IS PURRFECT!",
   "[ᓚᘏᗢ] 9 LIVES // 100% UPTIME",
   "[SYS] PETTING DETECTED: +10 HP",
-  "[TIP] PRESS [CTRL+K] FOR TAN",
-  "[^._.^] NO FLUFF, JUST PIXELS",
+  "[TIP] PRESS [CTRL+K] FOR TAN COPILOT",
+  "[^._.^] NO FLUFF, JUST RIGOROUS PIXELS",
+  "[NEKO] ARCH_TIP: DOMAIN NEVER REFERENCES DBCONTEXT!",
+  "[NEKO] FUN FACT: JONATHAN PEER-MENTORS AT UM!",
+  "[NEKO] CHECK OUT THE LIVE SQL SANDBOX IN BLUEPRINTS!",
 ];
 
 const CAT_OFFSET = 24; // Pixel cat size allowance
@@ -60,6 +64,7 @@ export default function CyberNeko() {
   }, []);
 
   const changeMode = (newMode: "ACTIVE" | "SLEEP" | "HIDDEN") => {
+    sound.playClick();
     setNekoMode(newMode);
     localStorage.setItem("cyber-neko-mode", newMode);
     if (newMode === "SLEEP") {
@@ -152,6 +157,7 @@ export default function CyberNeko() {
   // Click interaction (Pet / Purr)
   const handlePet = (e: React.MouseEvent) => {
     e.stopPropagation();
+    sound.playMeow();
     setState("PURR");
 
     // Random quote
@@ -346,10 +352,9 @@ export default function CyberNeko() {
                 position: "absolute",
                 top: `${speechPos.top}px`,
                 left: `${speechPos.left}px`,
-                whiteSpace: "nowrap",
                 transform: `rotate(${-rotationDeg}deg)`, // Keep text right-side up
               }}
-              className="bg-[var(--color-bg)] border border-[var(--color-text)] px-2 py-0.5 font-pixel text-[0.55rem] text-[var(--color-text)] shadow-[2px_2px_0px_var(--color-border)] animate-in fade-in zoom-in-90 duration-150 z-50 pointer-events-none"
+              className="bg-[var(--color-bg)] border border-[var(--color-text)] px-2 py-0.5 font-pixel text-[0.55rem] text-[var(--color-text)] shadow-[2px_2px_0px_var(--color-border)] animate-in fade-in zoom-in-90 duration-150 z-50 pointer-events-none max-w-[200px] sm:max-w-none whitespace-normal sm:whitespace-nowrap"
             >
               {speech}
             </div>

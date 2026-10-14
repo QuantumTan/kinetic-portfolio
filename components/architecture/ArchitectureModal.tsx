@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { architectureData, ProjectArchitecture } from "@/data/architecture-data";
+import { sound } from "@/utils/sound";
 import LayerDiagram from "./LayerDiagram";
 import SchemaInspector from "./SchemaInspector";
 import PipelineSimulator from "./PipelineSimulator";
@@ -55,6 +56,7 @@ export default function ArchitectureModal({
     architectureData[activeProjectId] || architectureData["crms-peguit"];
 
   const handleDispatchToTan = () => {
+    sound.playPing();
     // Dispatch custom event to notify TAN Copilot
     if (typeof window !== "undefined") {
       window.dispatchEvent(
@@ -74,7 +76,10 @@ export default function ArchitectureModal({
       aria-modal="true"
       className="fixed inset-0 z-[9990] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-xs animate-in fade-in duration-200"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) {
+          sound.playClick();
+          onClose();
+        }
       }}
     >
       {/* MODAL FRAME */}
@@ -91,9 +96,12 @@ export default function ArchitectureModal({
           <div className="flex items-center gap-3 font-mono text-xs">
             <span className="hidden sm:inline text-[var(--color-text-dim)]">ESC TO CLOSE</span>
             <button
-              onClick={onClose}
+              onClick={() => {
+                sound.playClick();
+                onClose();
+              }}
               aria-label="Close Architecture Explorer"
-              className="pixel-btn text-xs px-2 py-0.5"
+              className="pixel-btn text-xs px-2.5 py-1 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               [X]
             </button>
@@ -108,8 +116,11 @@ export default function ArchitectureModal({
               return (
                 <button
                   key={proj.id}
-                  onClick={() => setActiveProjectId(proj.id)}
-                  className={`font-pixel text-[0.6rem] sm:text-[0.65rem] px-3 py-1.5 border transition-all cursor-none ${
+                  onClick={() => {
+                    sound.playClick();
+                    setActiveProjectId(proj.id);
+                  }}
+                  className={`font-pixel text-[0.6rem] sm:text-[0.65rem] px-3 py-1.5 border transition-all min-h-[44px] sm:min-h-[36px] flex items-center cursor-pointer ${
                     isSelected
                       ? "border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-surface)] shadow-[2px_2px_0px_var(--color-border)]"
                       : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-text-dim)]"
@@ -141,8 +152,11 @@ export default function ArchitectureModal({
         {/* SUB-VIEW NAVIGATION TABS */}
         <div className="flex border-b-2 border-[var(--color-border)] bg-[var(--color-bg-alt)] shrink-0 overflow-x-auto">
           <button
-            onClick={() => setActiveTab("layers")}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all cursor-none border-r border-[var(--color-border)] ${
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("layers");
+            }}
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "layers"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
@@ -151,8 +165,11 @@ export default function ArchitectureModal({
             [01 // LAYER_BLUEPRINT]
           </button>
           <button
-            onClick={() => setActiveTab("schema")}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all cursor-none border-r border-[var(--color-border)] ${
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("schema");
+            }}
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "schema"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
@@ -161,8 +178,11 @@ export default function ArchitectureModal({
             [02 // SCHEMA_INSPECTOR]
           </button>
           <button
-            onClick={() => setActiveTab("pipeline")}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all cursor-none ${
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("pipeline");
+            }}
+            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "pipeline"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
@@ -183,15 +203,18 @@ export default function ArchitectureModal({
         <div className="bg-[var(--color-surface)] border-t-2 border-[var(--color-border)] p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2 shrink-0">
           <button
             onClick={handleDispatchToTan}
-            className="pixel-btn text-[0.65rem] sm:text-xs py-1.5 px-3 flex items-center gap-2"
+            className="pixel-btn text-[0.65rem] sm:text-xs py-2 px-3 flex items-center gap-2 min-h-[44px] cursor-pointer"
           >
             <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping" />
             <span>[AI_DISPATCH] ASK TAN TO EXPLAIN THIS ARCHITECTURE</span>
           </button>
 
           <button
-            onClick={onClose}
-            className="font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-2 py-1 cursor-none"
+            onClick={() => {
+              sound.playClick();
+              onClose();
+            }}
+            className="font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-3 py-2 min-h-[44px] flex items-center cursor-pointer"
           >
             [CLOSE_EXPLORER (ESC)]
           </button>

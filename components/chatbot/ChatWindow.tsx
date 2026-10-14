@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { getAutonomousResponse } from "@/data/knowledge-base";
+import { sound } from "@/utils/sound";
 
 interface Message {
   role: "user" | "model";
@@ -9,6 +10,7 @@ interface Message {
 }
 
 const QUICK_COMMANDS = [
+  { cmd: "[⚡] RECRUITER_BRIEF_30s", prompt: "Generate a 30-second executive summary of Jonathan Peguit Jr. for tech recruiters and hiring managers." },
   { cmd: "[01] PROJECTS_OVERVIEW", prompt: "Summarize Jonathan's primary engineering projects." },
   { cmd: "[02] TECH_STACK_MATRIX", prompt: "What are Jonathan's core programming languages and frameworks?" },
   { cmd: "[03] GET_RESUME_URI", prompt: "Where can I view and download Jonathan's verified resume?" },
@@ -50,6 +52,7 @@ export default function ChatWindow({
   const sendMessage = useCallback(
     async (text: string) => {
       if (!text.trim() || isLoading) return;
+      sound.playClick();
       setChipsHidden(true);
       setInput("");
       setIsLoading(true);
@@ -104,6 +107,7 @@ export default function ChatWindow({
           ...newHistory,
           { role: "model", parts: [{ text: fullResponse }] },
         ]);
+        sound.playSuccess();
       } catch {
         const fallbackText = getAutonomousResponse(text);
         setMessages([
@@ -113,6 +117,7 @@ export default function ChatWindow({
             parts: [{ text: fallbackText }],
           },
         ]);
+        sound.playSuccess();
       } finally {
         setIsLoading(false);
       }
@@ -134,31 +139,34 @@ export default function ChatWindow({
       id="chat-window"
       role="dialog"
       aria-label="TAN AI Copilot Interface"
-      className="fixed bottom-20 right-4 sm:right-6 w-[380px] max-w-[calc(100vw-32px)] h-[520px] max-h-[80vh] bg-[var(--color-card)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_var(--color-border)] flex flex-col z-[9999] font-mono text-xs"
+      className="fixed bottom-16 left-2 right-2 sm:left-auto sm:right-6 sm:bottom-20 sm:w-[390px] h-[520px] max-h-[82dvh] bg-[var(--color-card)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_var(--color-border)] flex flex-col z-[9999] font-mono text-xs animate-in fade-in duration-200"
     >
       {/* TERMINAL HEADER */}
-      <div className="flex items-center justify-between p-3 bg-[var(--color-surface)] border-b-2 border-[var(--color-border)] select-none">
+      <div className="flex items-center justify-between p-3 bg-[var(--color-surface)] border-b-2 border-[var(--color-border)] select-none shrink-0">
         <div className="flex items-center gap-2 font-pixel text-xs text-[var(--color-text)]">
           <span className="w-2 h-2 bg-[var(--color-text)] inline-block animate-pulse" />
-          <span>TAN // COPILOT_AGENT_v2.4</span>
+          <span>TAN // COPILOT_AGENT_v2.7</span>
         </div>
         <button
-          onClick={onClose}
+          onClick={() => {
+            sound.playClick();
+            onClose();
+          }}
           aria-label="Close copilot"
-          className="font-pixel text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-1 cursor-none"
+          className="font-pixel text-xs text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-2 py-1 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
         >
           [X]
         </button>
       </div>
 
       {/* MESSAGES LOG */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-[var(--color-bg)]">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 flex flex-col gap-3 bg-[var(--color-bg)]">
         {/* WELCOME TERMINAL MESSAGE */}
         <div className="border border-[var(--color-border)] p-3 bg-[var(--color-surface)] text-[var(--color-text-muted)] leading-relaxed">
           <p className="font-pixel text-[0.65rem] text-[var(--color-text)] mb-1">
             &gt; SYSTEM_READY // TAN_COPILOT
           </p>
-          <p>
+          <p className="text-[0.7rem] sm:text-xs">
             Autonomous portfolio knowledge dispatcher. Ask any query regarding Jonathan&apos;s systems development, technical stack, or background.
           </p>
         </div>
@@ -189,12 +197,15 @@ export default function ChatWindow({
 
       {/* COMMAND QUICK CHIPS */}
       {!chipsHidden && (
-        <div className="p-2 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex flex-wrap gap-1.5">
+        <div className="p-2 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex flex-wrap gap-1.5 shrink-0 max-h-[110px] overflow-y-auto">
           {QUICK_COMMANDS.map(({ cmd, prompt }) => (
             <button
               key={cmd}
-              onClick={() => sendMessage(prompt)}
-              className="font-pixel text-[0.6rem] border border-[var(--color-border)] px-2 py-1 bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] hover:border-[var(--color-invert-bg)] transition-colors cursor-none"
+              onClick={() => {
+                sound.playBlip();
+                sendMessage(prompt);
+              }}
+              className="font-pixel text-[0.6rem] border border-[var(--color-border)] px-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] hover:border-[var(--color-invert-bg)] transition-colors min-h-[36px] flex items-center cursor-pointer"
             >
               {cmd}
             </button>
@@ -203,7 +214,7 @@ export default function ChatWindow({
       )}
 
       {/* INPUT COMMAND ROW */}
-      <div className="p-3 border-t-2 border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-2">
+      <div className="p-2.5 sm:p-3 border-t-2 border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-2 shrink-0">
         <span className="font-pixel text-xs text-[var(--color-text-dim)]">&gt;</span>
         <input
           ref={inputRef}
@@ -213,18 +224,18 @@ export default function ChatWindow({
           onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
           placeholder="Enter command or query..."
           disabled={isLoading}
-          className="flex-1 bg-transparent border-none outline-none font-mono text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] disabled:opacity-50"
+          className="flex-1 bg-transparent border-none outline-none font-mono text-[16px] sm:text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] disabled:opacity-50 min-h-[44px]"
         />
         <button
           onClick={() => sendMessage(input)}
           disabled={isLoading || !input.trim()}
-          className="pixel-btn text-[0.65rem] py-1 px-3 disabled:opacity-30 cursor-none"
+          className="pixel-btn text-[0.65rem] py-1.5 px-3 disabled:opacity-30 min-h-[44px] flex items-center justify-center cursor-pointer"
         >
           [SEND]
         </button>
       </div>
 
-      <div className="bg-[var(--color-bg)] py-1 text-center font-mono text-[0.6rem] text-[var(--color-text-dim)] border-t border-[var(--color-border)]">
+      <div className="bg-[var(--color-bg)] py-1 text-center font-mono text-[0.6rem] text-[var(--color-text-dim)] border-t border-[var(--color-border)] shrink-0">
         TOGGLE: [CTRL+K] // ESC TO CLOSE
       </div>
     </div>
