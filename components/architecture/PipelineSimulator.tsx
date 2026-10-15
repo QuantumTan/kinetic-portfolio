@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ProjectArchitecture, PipelineStep } from "@/data/architecture-data";
 import { sound } from "@/utils/sound";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 export default function PipelineSimulator({ project }: { project: ProjectArchitecture }) {
   const { pipeline } = project;
@@ -109,7 +110,7 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
               <div className="flex items-center justify-between font-mono text-[0.55rem] text-[var(--color-text-dim)]">
                 <span>0{step.step}</span>
                 {isActive && <span className="w-1.5 h-1.5 bg-[var(--color-text)] rounded-full" />}
-                {isPassed && <span>✓</span>}
+                {isPassed && <CheckIcon className="w-2.5 h-2.5 text-emerald-400" />}
               </div>
               <span className="font-mono text-[0.6rem] font-bold text-[var(--color-text)] truncate mt-1">
                 {step.label}
@@ -137,7 +138,7 @@ export default function PipelineSimulator({ project }: { project: ProjectArchite
         </div>
 
         {/* TELEMETRY METRIC */}
-        <div className="bg-[var(--color-card)] p-3 border border-[var(--color-border)] font-mono text-xs flex items-center justify-between">
+        <div className="bg-[var(--color-card)] p-3 border border-[var(--color-border)] font-mono text-xs flex flex-wrap items-center justify-between gap-1.5">
           <span className="text-[var(--color-text-dim)] text-[0.65rem] uppercase">
             [SYS_TELEMETRY_LOG]
           </span>

@@ -20,7 +20,7 @@ function buildSystemPrompt(): string {
 Your personality: ${kb.persona.personality}
 
 CRITICAL FORMATTING INSTRUCTIONS:
-- STRICT RULE: NEVER USE EMOJIS UNDER ANY CIRCUMSTANCE. Do not use smiley faces, symbols like 👋, 😊, 🤖, 🚀, or any Unicode emojis.
+- STRICT RULE: NEVER USE EMOJIS UNDER ANY CIRCUMSTANCE. Do not use smiley faces, icon glyphs, or any Unicode emojis.
 - Communicate with crisp, technical, terminal-like precision. Use plaintext and bracketed prefixes when helpful like [SYS], [INFO], [PROJECTS], [CONTACT].
 - You ONLY know about Jonathan based on the verified data below. Stay strictly on topic.
 - If asked about anything outside Jonathan's portfolio, respond: "QUERY_OUT_OF_SCOPE: That is beyond the verified portfolio data. You may dispatch an inquiry directly to jonathanjrhayo@gmail.com."
@@ -58,19 +58,104 @@ function streamTextResponse(text: string): Response {
   });
 }
 
+// ─────────────────────────────────────────
+// SLIDING WINDOW IN-MEMORY RATE LIMITER
+// Max 20 requests per 60 seconds per IP address
+// ─────────────────────────────────────────
+interface RateLimitRecord {
+  timestamps: number[];
+}
+const ipRateLimitMap = new Map<string, RateLimitRecord>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const windowMs = 60 * 1000;
+  const maxRequests = 20;
+
+  const record = ipRateLimitMap.get(ip) || { timestamps: [] };
+  record.timestamps = record.timestamps.filter((t) => now - t < windowMs);
+
+  if (record.timestamps.length >= maxRequests) {
+    return true;
+  }
+
+  record.timestamps.push(now);
+  ipRateLimitMap.set(ip, record);
+
+  // Periodically clean up stale records to prevent memory leak
+  if (ipRateLimitMap.size > 1000) {
+    for (const [key, value] of ipRateLimitMap.entries()) {
+      if (value.timestamps.every((t) => now - t >= windowMs)) {
+        ipRateLimitMap.delete(key);
+      }
+    }
+  }
+
+  return false;
+}
+
 export async function POST(req: NextRequest) {
+  // 1. Client IP rate limiting
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "anonymous-client";
+
+  if (isRateLimited(ip)) {
+    return streamTextResponse(
+      "[RATE_LIMIT_EXCEEDED] Maximum 20 transmissions per minute reached. Please pause before querying TAN Copilot again."
+    );
+  }
+
+  // 2. Safe JSON parsing & input validation
+  let payload: any;
+  try {
+    payload = await req.json();
+  } catch {
+    return new Response(
+      JSON.stringify({ error: "BAD_REQUEST: Malformed JSON payload." }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  const { messages } = payload || {};
+
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return new Response(
+      JSON.stringify({ error: "BAD_REQUEST: 'messages' must be a non-empty array." }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  // Cap conversation history to last 20 messages to prevent payload inflation
+  const sanitizedMessages = messages.slice(-20);
+
+  // Validate message contents & prevent oversized token exhaustion attacks
+  for (const msg of sanitizedMessages) {
+    if (Array.isArray(msg?.parts)) {
+      for (const part of msg.parts) {
+        if (typeof part?.text === "string" && part.text.length > 2500) {
+          return new Response(
+            JSON.stringify({
+              error: "PAYLOAD_TOO_LARGE: Message part exceeds 2500 character limit.",
+            }),
+            { status: 413, headers: { "Content-Type": "application/json" } }
+          );
+        }
+      }
+    }
+  }
+
+  // 3. Server-only API key lookup (NEVER use NEXT_PUBLIC_ keys on server handlers)
   const rawKey =
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
-    process.env.GOOGLE_GEMINI_API_KEY ||
-    process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    process.env.GOOGLE_GEMINI_API_KEY;
 
   const apiKey = rawKey ? rawKey.trim().replace(/^["']|["']$/g, "") : undefined;
-  const { messages } = await req.json();
-  const lastUserPrompt = messages?.[messages.length - 1]?.parts?.[0]?.text ?? "";
+  const lastUserPrompt = sanitizedMessages[sanitizedMessages.length - 1]?.parts?.[0]?.text ?? "";
 
-  // Resilient fallback: If API key is not yet configured in Vercel/Netlify dashboard,
-  // stream verified response from the autonomous portfolio knowledge engine
+  // Resilient fallback: If API key is not configured, stream verified autonomous knowledge
   if (!apiKey || apiKey === "your_gemini_api_key_here") {
     const fallbackText = getAutonomousResponse(lastUserPrompt);
     return streamTextResponse(fallbackText);
@@ -80,7 +165,7 @@ export async function POST(req: NextRequest) {
 
   const body = {
     system_instruction: { parts: [{ text: systemPrompt }] },
-    contents: messages,
+    contents: sanitizedMessages,
     generationConfig: {
       maxOutputTokens: 2048,
       temperature: 0.5,
@@ -113,15 +198,17 @@ export async function POST(req: NextRequest) {
   }
 
   // If upstream Gemini fails or is rate limited, fall back to autonomous knowledge base seamlessly
-  if (!geminiRes || !geminiRes.ok) {
+  if (!geminiRes || !geminiRes.ok || !geminiRes.body) {
     const fallbackText = getAutonomousResponse(lastUserPrompt);
     return streamTextResponse(fallbackText);
   }
 
+  const responseBody = geminiRes.body;
+
   // Stream the response back to the client
   const stream = new ReadableStream({
     async start(controller) {
-      const reader = geminiRes.body!.getReader();
+      const reader = responseBody.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
 

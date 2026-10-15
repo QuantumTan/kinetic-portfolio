@@ -113,7 +113,7 @@ export default function MentorshipTelemetry() {
             <p className="font-mono text-xs text-[var(--color-text)] italic leading-relaxed mb-3">
               &ldquo;{end.quote}&rdquo;
             </p>
-            <div className="border-t border-dashed border-[var(--color-border)] pt-2 flex items-center justify-between text-[0.65rem] font-mono">
+            <div className="border-t border-dashed border-[var(--color-border)] pt-2 flex flex-wrap items-center justify-between gap-1.5 text-[0.65rem] font-mono">
               <span className="font-bold text-[var(--color-text)]">{end.author}</span>
               <span className="text-[var(--color-text-dim)]">{end.role}</span>
             </div>

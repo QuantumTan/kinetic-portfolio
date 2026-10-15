@@ -147,7 +147,7 @@ export default function SchemaInspector({ project }: { project: ProjectArchitect
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* MODE TOGGLE TABS */}
-      <div className="flex border-2 border-[var(--color-border)] bg-[var(--color-card)] p-1 gap-1">
+      <div className="flex flex-col sm:flex-row border-2 border-[var(--color-border)] bg-[var(--color-card)] p-1 gap-1">
         <button
           onClick={() => {
             sound.playClick();
@@ -159,7 +159,8 @@ export default function SchemaInspector({ project }: { project: ProjectArchitect
               : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]"
           }`}
         >
-          <span>[01 // DATA_DICTIONARY ({project.tables.length}_TABLES)]</span>
+          <span className="hidden sm:inline">[01 // DATA_DICTIONARY ({project.tables.length}_TABLES)]</span>
+          <span className="inline sm:hidden">[01 // DATA_DICTIONARY ({project.tables.length})]</span>
         </button>
         <button
           onClick={() => {
@@ -173,7 +174,8 @@ export default function SchemaInspector({ project }: { project: ProjectArchitect
           }`}
         >
           <span className="w-1.5 h-1.5 bg-emerald-400 inline-block animate-ping" />
-          <span>[02 // ⚡ LIVE_SQL_QUERY_SANDBOX]</span>
+          <span className="hidden sm:inline">[02 // LIVE_SQL_QUERY_SANDBOX]</span>
+          <span className="inline sm:hidden">[02 // SQL_QUERY_SANDBOX]</span>
         </button>
       </div>
 

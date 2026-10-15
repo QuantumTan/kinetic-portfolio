@@ -114,7 +114,7 @@ export default function ProjectsIndexPage() {
                     className="pixel-btn w-full text-xs py-2.5 min-h-[44px] flex items-center justify-center gap-2 bg-[var(--color-surface)] border-2 border-[var(--color-text)] hover:bg-[var(--color-card-hover)] font-pixel cursor-pointer"
                   >
                     <span className="w-1.5 h-1.5 bg-[var(--color-text)] inline-block animate-ping" />
-                    <span>[⚡ VIEW FULL BLUEPRINT (5-TIER)]</span>
+                    <span>[VIEW FULL BLUEPRINT (5-TIER)]</span>
                   </Link>
 
                   <div className="flex gap-2">

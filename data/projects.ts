@@ -21,8 +21,8 @@ export const projects: Project[] = [
   {
     id: "crms-peguit",
     code: "PRJ-01",
-    title: "CRMS_PEGUIT (.NET CLEAN ARCHITECTURE)",
-    role: "Lead Systems & Backend Engineer",
+    title: "Enterprise CRM — .NET 8 Clean Architecture",
+    role: "Full-Stack Developer & Systems Architect",
     stack: ["C#", ".NET 8", "ASP.NET Core", "EF Core", "Domain-Driven Design", "SQL Server"],
     short: "Enterprise multi-tier CRM engineered with strict Clean Architecture and DDD patterns.",
     description:
@@ -36,8 +36,8 @@ export const projects: Project[] = [
   {
     id: "crm-system",
     code: "PRJ-02",
-    title: "ENTERPRISE_CRM_PLATFORM (LARAVEL 12)",
-    role: "Full-Stack Backend Architect",
+    title: "Enterprise CRM Platform — Laravel 12",
+    role: "Full-Stack Developer & QA Lead",
     stack: ["Laravel 12", "PHP 8.2", "MySQL", "Blade", "Vite", "Tailwind CSS", "Pest", "Fortify"],
     short: "Full-stack customer relationship management platform with sales pipelines and role RBAC.",
     description:
@@ -51,8 +51,8 @@ export const projects: Project[] = [
   {
     id: "swinetrack-pos",
     code: "PRJ-03",
-    title: "SWINETRACK_POS_SYSTEM",
-    role: "Full-Stack Developer",
+    title: "SwineTrack POS & Livestock Inventory",
+    role: "Full-Stack Developer & Systems Analyst",
     stack: ["Laravel 12", "PHP", "MySQL", "Tailwind CSS", "Vite", "Blade"],
     short: "Point-of-Sale (POS) and commercial livestock inventory management software.",
     description:
@@ -66,12 +66,12 @@ export const projects: Project[] = [
   {
     id: "portfolio",
     code: "PRJ-04",
-    title: "KINETIC_CORE_PORTFOLIO",
-    role: "Systems & UI Engineer",
-    stack: ["Next.js 15", "Tailwind CSS", "GSAP 3", "Gemini AI", "TypeScript"],
-    short: "Monochrome kinetic terminal interface with embedded Gemini LLM copilot.",
+    title: "Kinetic Systems Portfolio & AI Copilot",
+    role: "Full-Stack Developer & UI Architect",
+    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "GSAP 3", "Gemini AI"],
+    short: "High-precision kinetic HUD portfolio with embedded Gemini LLM engineering copilot.",
     description:
-      "A brutalist kinetic portfolio engineered with Next.js 15 App Router, GSAP timelines, custom lerp block cursor, and server-side proxied Google Gemini 2.0 Flash agent.",
+      "A refined cyber-HUD portfolio engineered with Next.js 15 App Router, GSAP hardware-accelerated animations, custom block cursor, and server-side proxied Google Gemini 2.0 Flash agent.",
     image: "/assets/projects/portfolio-placeholder.svg",
     link: "#",
     github: "https://github.com/QuantumTan",

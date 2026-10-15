@@ -8,6 +8,8 @@ import SchemaInspector from "./SchemaInspector";
 import PipelineSimulator from "./PipelineSimulator";
 import ApiInspector from "./ApiInspector";
 import AdrViewer from "./AdrViewer";
+import InteractiveApiSandbox from "./InteractiveApiSandbox";
+import InteractiveKanbanPreview from "./InteractiveKanbanPreview";
 
 interface ArchitectureModalProps {
   isOpen: boolean;
@@ -15,7 +17,7 @@ interface ArchitectureModalProps {
   onClose: () => void;
 }
 
-type TabMode = "layers" | "schema" | "pipeline" | "api" | "adr";
+type TabMode = "layers" | "sandbox" | "schema" | "pipeline" | "api" | "adr";
 
 export default function ArchitectureModal({
   isOpen,
@@ -85,7 +87,7 @@ export default function ArchitectureModal({
       }}
     >
       {/* MODAL FRAME */}
-      <div className="relative w-full max-w-[1100px] max-h-[92vh] flex flex-col bg-[var(--color-bg)] border-2 border-[var(--color-text)] shadow-[8px_8px_0px_var(--color-border)] overflow-hidden">
+      <div className="relative w-full max-w-[1100px] max-h-[95dvh] sm:max-h-[90vh] flex flex-col bg-[var(--color-bg)] border-2 border-[var(--color-text)] shadow-[8px_8px_0px_var(--color-border)] overflow-hidden">
         {/* HUD TITLE BAR */}
         <div className="bg-[var(--color-surface)] border-b-2 border-[var(--color-border)] px-3 sm:px-4 py-2.5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
@@ -122,7 +124,7 @@ export default function ArchitectureModal({
                     sound.playClick();
                     setActiveProjectId(proj.id);
                   }}
-                  className={`font-pixel text-[0.6rem] sm:text-[0.65rem] px-3 py-1.5 border transition-all min-h-[44px] sm:min-h-[36px] flex items-center cursor-pointer ${
+                  className={`font-pixel text-[0.6rem] sm:text-[0.65rem] px-2.5 sm:px-3 py-1.5 border transition-all min-h-[44px] sm:min-h-[36px] flex items-center cursor-pointer ${
                     isSelected
                       ? "border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-surface)] shadow-[2px_2px_0px_var(--color-border)]"
                       : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-text-dim)]"
@@ -158,71 +160,99 @@ export default function ArchitectureModal({
               sound.playClick();
               setActiveTab("layers");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "layers"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [01 // LAYER_BLUEPRINT]
+            <span className="hidden sm:inline">[01 // LAYER_BLUEPRINT]</span>
+            <span className="sm:hidden">[01 // LAYERS]</span>
+          </button>
+          <button
+            onClick={() => {
+              sound.playClick();
+              setActiveTab("sandbox");
+            }}
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+              activeTab === "sandbox"
+                ? "bg-[var(--color-surface)] text-emerald-400 border-b-2 border-b-emerald-400 font-bold"
+                : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
+            }`}
+          >
+            <span className="hidden sm:inline">[02 // LIVE_SANDBOX]</span>
+            <span className="sm:hidden">[02 // SANDBOX]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("schema");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "schema"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [02 // SCHEMA_INSPECTOR]
+            <span className="hidden sm:inline">[03 // SCHEMA_INSPECTOR]</span>
+            <span className="sm:hidden">[03 // SCHEMA]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("pipeline");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "pipeline"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [03 // REQUEST_PIPELINE]
+            <span className="hidden sm:inline">[04 // REQUEST_PIPELINE]</span>
+            <span className="sm:hidden">[04 // PIPELINE]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("api");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "api"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [04 // API_CONTRACTS]
+            <span className="hidden sm:inline">[05 // API_CONTRACTS]</span>
+            <span className="sm:hidden">[05 // API]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("adr");
             }}
-            className={`flex-1 min-w-[160px] py-2.5 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all min-h-[44px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[160px] py-2.5 px-2.5 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all min-h-[44px] flex items-center justify-center cursor-pointer ${
               activeTab === "adr"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [05 // ADR_RECORDS]
+            <span className="hidden sm:inline">[06 // ADR_RECORDS]</span>
+            <span className="sm:hidden">[06 // ADR]</span>
           </button>
         </div>
 
         {/* MAIN SCROLLABLE CONTENT BODY */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-5">
           {activeTab === "layers" && <LayerDiagram project={project} />}
+          {activeTab === "sandbox" && (
+            <div>
+              {project.id === "crm-system" ? (
+                <InteractiveKanbanPreview />
+              ) : (
+                <InteractiveApiSandbox />
+              )}
+            </div>
+          )}
           {activeTab === "schema" && <SchemaInspector project={project} />}
           {activeTab === "pipeline" && <PipelineSimulator project={project} />}
           {activeTab === "api" && <ApiInspector projectId={project.id} />}

@@ -4,11 +4,12 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { sound } from "@/utils/sound";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 const CERTS = [
   {
     title: "Information Technology Specialist: Java",
-    issuer: "CERTIPORT // PEARSON VUE",
+    issuer: "Certiport // Pearson VUE",
     code: "CERT-01",
     badgeLabel: "PEARSON_VUE_EXAM",
     description:
@@ -18,7 +19,7 @@ const CERTS = [
   },
   {
     title: "Java (Basic) Assessment Certification",
-    issuer: "HACKERRANK",
+    issuer: "HackerRank",
     code: "CERT-02",
     badgeLabel: "ALGORITHM_ASSESSMENT",
     description:
@@ -28,7 +29,7 @@ const CERTS = [
   },
   {
     title: "CSS (Basic) Layout & Engine Certification",
-    issuer: "HACKERRANK",
+    issuer: "HackerRank",
     code: "CERT-03",
     badgeLabel: "LAYOUT_ENGINE_ASSESSMENT",
     description:
@@ -38,7 +39,7 @@ const CERTS = [
   },
   {
     title: "Java Masterclass Professional Certification",
-    issuer: "UDEMY",
+    issuer: "Udemy",
     code: "CERT-04",
     badgeLabel: "CONCURRENCY_&_OOP",
     description:
@@ -68,13 +69,13 @@ export default function Certifications() {
       {/* SECTION HEADER */}
       <div className="flex flex-wrap items-center justify-between border-b-2 border-[var(--color-border)] pb-3 mb-5 gap-2">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-[var(--color-text)] inline-block animate-pulse" />
+          <span className="w-2.5 h-2.5 bg-emerald-600 dark:bg-emerald-400 inline-block animate-pulse" />
           <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
             03 // VERIFIED_CREDENTIALS
           </h2>
         </div>
         <span className="font-mono text-xs text-[var(--color-text-dim)]">
-          [TOTAL: {CERTS.length} // ALL_ACTIVE]
+          [TOTAL: {CERTS.length} // ALL VISIBLE]
         </span>
       </div>
 
@@ -83,46 +84,47 @@ export default function Certifications() {
         {CERTS.map((cert) => (
           <article
             key={cert.code}
-            className="cert-ledger-item pixel-box p-3.5 sm:p-4 bg-[var(--color-card)] border border-[var(--color-border)] hover:border-[var(--color-text)] transition-all flex flex-col justify-between group"
+            className="cert-ledger-item pixel-box p-3.5 sm:p-4 bg-[var(--color-card)] border border-[var(--color-border)] hover:border-emerald-600 dark:hover:border-emerald-400 transition-all flex flex-col justify-between group"
           >
             <div>
               {/* TOP STRIP */}
               <div className="flex items-center justify-between font-mono text-[0.65rem] text-[var(--color-text-dim)] mb-1.5 pb-1 border-b border-[var(--color-border)]">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-[var(--color-text)]">{cert.code}</span>
-                  <span className="font-pixel text-[0.55rem] text-[var(--color-text-dim)]">
+                  <span className="font-mono font-bold text-emerald-700 dark:text-emerald-400">[{cert.code}]</span>
+                  <span className="font-mono text-[0.62rem] text-[var(--color-text-dim)]">
                     // {cert.issuer}
                   </span>
                 </div>
-                <span className="font-pixel text-[0.5rem] bg-[var(--color-surface)] border border-[var(--color-border)] px-1.5 py-0.5 text-[var(--color-text)]">
+                <span className="font-mono text-[0.55rem] bg-[var(--color-surface)] border border-emerald-600/40 dark:border-[var(--color-border)] px-1.5 py-0.5 text-emerald-700 dark:text-emerald-400 font-bold">
                   [{cert.verifiedVia}]
                 </span>
               </div>
 
-              {/* TITLE */}
-              <h3 className="font-pixel text-xs text-[var(--color-text)] mb-1 group-hover:underline leading-snug">
+              {/* CLEAN SANS TITLE */}
+              <h3 className="font-sans font-bold text-sm sm:text-[0.95rem] text-[var(--color-text)] mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors leading-snug">
                 {cert.title}
               </h3>
 
               {/* DESCRIPTION */}
-              <p className="font-mono text-[0.68rem] text-[var(--color-text-muted)] leading-relaxed mb-3">
+              <p className="font-sans text-xs text-[var(--color-text-muted)] leading-relaxed mb-3">
                 {cert.description}
               </p>
             </div>
 
             {/* ACTION */}
-            <div className="pt-2 border-t border-[var(--color-border)] flex items-center justify-between">
-              <span className="font-mono text-[0.6rem] text-[var(--color-text-dim)]">
-                VALIDATION: OFFICIAL_RECORD
+            <div className="pt-2 border-t border-[var(--color-border)] flex flex-wrap items-center justify-between gap-2">
+              <span className="font-mono text-[0.62rem] text-[var(--color-text-dim)]">
+                REGISTRY: OFFICIAL_VERIFICATION
               </span>
               <a
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.playClick()}
-                className="pixel-btn text-[0.6rem] py-1 px-3 min-h-[36px] flex items-center gap-1.5 cursor-pointer"
+                className="pixel-btn text-[0.62rem] py-1 px-3 min-h-[38px] flex items-center gap-1.5 cursor-pointer"
               >
-                <span>[VERIFY_CREDENTIAL ↗]</span>
+                <span>[VERIFY_CREDENTIAL]</span>
+                <ArrowTopRightOnSquareIcon className="w-3 h-3 text-[var(--color-primary)]" />
               </a>
             </div>
           </article>

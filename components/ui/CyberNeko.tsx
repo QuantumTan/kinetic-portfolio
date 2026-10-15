@@ -25,6 +25,7 @@ const CAT_OFFSET = 24; // Pixel cat size allowance
 
 export default function CyberNeko() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [nekoMode, setNekoMode] = useState<"ACTIVE" | "SLEEP" | "HIDDEN">("ACTIVE");
   const [state, setState] = useState<NekoState>("WALK");
   const [edge, setEdge] = useState<Edge>("TOP");
@@ -40,6 +41,7 @@ export default function CyberNeko() {
   const progressRef = useRef<number>(40); // distance in px along perimeter
   const edgeRef = useRef<Edge>("TOP");
   const stateRef = useRef<NekoState>("WALK");
+  const isMobileRef = useRef<boolean>(false);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const speechTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const mousePosRef = useRef({ x: -1000, y: -1000 });
@@ -53,15 +55,32 @@ export default function CyberNeko() {
     edgeRef.current = edge;
   }, [edge]);
 
-  // Load saved preference from localStorage
+  // Load saved preference from localStorage & setup mobile detector
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 640;
+      setIsMobile(mobile);
+      isMobileRef.current = mobile;
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
     const saved = localStorage.getItem("cyber-neko-mode");
     if (saved === "ACTIVE" || saved === "SLEEP" || saved === "HIDDEN") {
       setNekoMode(saved);
       if (saved === "SLEEP") setState("SLEEP");
     }
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // When switching to mobile, park CyberNeko quietly in SIT pose
+  useEffect(() => {
+    if (isMobile && state === "WALK") {
+      setState("SIT");
+    }
+  }, [isMobile, state]);
 
   const changeMode = (newMode: "ACTIVE" | "SLEEP" | "HIDDEN") => {
     sound.playClick();
@@ -70,7 +89,7 @@ export default function CyberNeko() {
     if (newMode === "SLEEP") {
       setState("SLEEP");
     } else if (newMode === "ACTIVE") {
-      setState("WALK");
+      setState(isMobileRef.current ? "SIT" : "WALK");
       resetIdleTimer();
     }
   };
@@ -121,7 +140,7 @@ export default function CyberNeko() {
     if (stateRef.current === "SLEEP") {
       setState("ALERT");
       setTimeout(() => {
-        if (stateRef.current === "ALERT") setState("WALK");
+        if (stateRef.current === "ALERT") setState(isMobileRef.current ? "SIT" : "WALK");
       }, 900);
     }
 
@@ -167,7 +186,7 @@ export default function CyberNeko() {
     if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
     speechTimeoutRef.current = setTimeout(() => {
       setSpeech(null);
-      if (nekoMode === "ACTIVE") setState("WALK");
+      if (nekoMode === "ACTIVE") setState(isMobileRef.current ? "SIT" : "WALK");
     }, 2800);
   };
 
@@ -183,12 +202,30 @@ export default function CyberNeko() {
       lastTime = currentTime;
 
       const target = activeTargetRef.current;
-      if (target && nekoMode === "ACTIVE" && (stateRef.current === "WALK" || stateRef.current === "ALERT")) {
+      if (target && nekoMode === "ACTIVE") {
         const width = target.offsetWidth;
         const height = target.offsetHeight;
 
-        // Calculate Cat Screen Position for Cursor Proximity Check
-        const targetRect = target.getBoundingClientRect();
+        // Mobile viewport safeguard (< 640px):
+        // Park quietly at top-right corner of active card in SIT or SLEEP pose.
+        // Prevents covering touch targets, protocol selectors, or navigation links.
+        if (isMobileRef.current) {
+          const renderX = Math.max(16, width - 42);
+          const renderY = -23;
+          if (edgeRef.current !== "TOP") {
+            edgeRef.current = "TOP";
+            setEdge("TOP");
+          }
+          setIsFlipped(false);
+          setSpeechPos({ top: -38, left: -140 });
+          setPos({ x: renderX, y: renderY });
+          animFrameRef.current = requestAnimationFrame(loop);
+          return;
+        }
+
+        if (stateRef.current === "WALK" || stateRef.current === "ALERT") {
+          // Calculate Cat Screen Position for Cursor Proximity Check
+          const targetRect = target.getBoundingClientRect();
         const currentEdge = edgeRef.current;
         let catScreenX = targetRect.left;
         let catScreenY = targetRect.top;
@@ -293,6 +330,7 @@ export default function CyberNeko() {
 
         setPos({ x: renderX, y: renderY });
       }
+    }
 
       animFrameRef.current = requestAnimationFrame(loop);
     };
@@ -312,7 +350,7 @@ export default function CyberNeko() {
           className="pixel-btn text-[0.6rem] py-1 px-2.5 bg-[var(--color-surface)] opacity-70 hover:opacity-100"
           title="Wake Cyber-Neko"
         >
-          [🐾 WAKE_NEKO]
+          [WAKE_NEKO]
         </button>
       </div>
     );
@@ -508,23 +546,23 @@ export default function CyberNeko() {
       )}
 
       {/* DISCREET HUD CONTROL (BOTTOM-LEFT) */}
-      <div className="fixed bottom-4 left-4 z-[9990] flex items-center gap-1 font-mono text-[0.6rem] bg-[var(--color-surface)] border border-[var(--color-border)] px-2 py-1 shadow-[2px_2px_0px_var(--color-border)]">
-        <span className="font-pixel text-[0.55rem] text-[var(--color-text)]">
-          NEKO_V1:
+      <div className="fixed bottom-4 left-3 sm:left-4 z-[9990] flex items-center gap-1 font-mono text-[0.58rem] sm:text-[0.6rem] bg-[var(--color-surface)] border border-[var(--color-border)] px-2 py-1 shadow-[2px_2px_0px_var(--color-border)]">
+        <span className="font-pixel text-[0.52rem] sm:text-[0.55rem] text-[var(--color-text)]">
+          NEKO:
         </span>
         <button
           onClick={() => changeMode(nekoMode === "ACTIVE" ? "SLEEP" : "ACTIVE")}
-          className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-1"
+          className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-0.5 sm:px-1 cursor-pointer"
           title="Toggle Active/Sleep"
         >
-          [{nekoMode === "ACTIVE" ? "🐾 ON" : "💤 SLEEP"}]
+          [{nekoMode === "ACTIVE" ? (isMobile ? "PARKED" : "ON") : "SLEEP"}]
         </button>
         <button
           onClick={() => changeMode("HIDDEN")}
-          className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-0.5"
+          className="text-[var(--color-text-dim)] hover:text-[var(--color-text)] px-0.5 cursor-pointer"
           title="Hide Cyber-Neko"
         >
-          [✕]
+          [X]
         </button>
       </div>
     </>

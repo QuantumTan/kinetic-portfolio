@@ -15,6 +15,9 @@ export default function ClientWrapper({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("quantum_booted") === "true") {
+      setLoading(false);
+    }
     setMounted(true);
   }, []);
 

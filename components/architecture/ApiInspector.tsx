@@ -71,7 +71,7 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[0.65rem] text-[var(--color-text-dim)]">
             AUTH_TYPE:
           </span>
@@ -143,7 +143,7 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
               >
                 {endpoint.method}
               </span>
-              <code className="font-mono text-xs sm:text-sm text-[var(--color-text)] font-bold">
+              <code className="font-mono text-xs sm:text-sm text-[var(--color-text)] font-bold break-all">
                 {endpoint.path}
               </code>
             </div>
@@ -151,7 +151,7 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
             <button
               onClick={handleSimulate}
               disabled={isSimulating}
-              className="pixel-btn text-[0.65rem] sm:text-xs py-1.5 px-3 min-h-[36px] flex items-center gap-1.5 cursor-pointer"
+              className="pixel-btn text-[0.65rem] sm:text-xs py-1.5 px-3 min-h-[44px] flex items-center gap-1.5 cursor-pointer"
             >
               <span
                 className={`w-1.5 h-1.5 bg-[var(--color-text)] inline-block ${
@@ -167,16 +167,16 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
           </p>
 
           {/* SUB-TABS */}
-          <div className="flex border-b border-[var(--color-border)] bg-[var(--color-bg)]">
+          <div className="flex border-b border-[var(--color-border)] bg-[var(--color-bg)] overflow-x-auto shrink-0 scrollbar-none">
             {endpoint.requestPayload && (
               <button
                 onClick={() => {
                   sound.playClick();
                   setActiveTab("payload");
                 }}
-                className={`px-3 py-1.5 font-pixel text-[0.6rem] sm:text-[0.65rem] border-r border-[var(--color-border)] cursor-pointer ${
+                className={`px-3 py-2 font-pixel text-[0.6rem] sm:text-[0.65rem] border-r border-[var(--color-border)] shrink-0 min-h-[44px] flex items-center cursor-pointer ${
                   activeTab === "payload"
-                    ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
+                    ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                     : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
                 }`}
               >
@@ -188,22 +188,22 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
                 sound.playClick();
                 setActiveTab("validation");
               }}
-              className={`px-3 py-1.5 font-pixel text-[0.6rem] sm:text-[0.65rem] border-r border-[var(--color-border)] cursor-pointer ${
+              className={`px-3 py-2 font-pixel text-[0.6rem] sm:text-[0.65rem] border-r border-[var(--color-border)] shrink-0 min-h-[44px] flex items-center cursor-pointer ${
                 activeTab === "validation"
-                  ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
+                  ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                   : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
               }`}
             >
-              [VALIDATION_RULES ({endpoint.validationRules.length})]
+              [VALIDATION ({endpoint.validationRules.length})]
             </button>
             <button
               onClick={() => {
                 sound.playClick();
                 setActiveTab("headers");
               }}
-              className={`px-3 py-1.5 font-pixel text-[0.6rem] sm:text-[0.65rem] cursor-pointer ${
+              className={`px-3 py-2 font-pixel text-[0.6rem] sm:text-[0.65rem] shrink-0 min-h-[44px] flex items-center cursor-pointer ${
                 activeTab === "headers"
-                  ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)]"
+                  ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                   : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
               }`}
             >
@@ -255,7 +255,7 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
                         ({h.description})
                       </span>
                     </div>
-                    <code className="text-[var(--color-text-muted)] truncate max-w-[280px]">
+                    <code className="text-[var(--color-text-muted)] truncate max-w-full sm:max-w-[280px]">
                       {h.value}
                     </code>
                   </div>
@@ -266,9 +266,9 @@ export default function ApiInspector({ projectId }: ApiInspectorProps) {
 
           {/* SIMULATED RESPONSE / STATUS SECTION */}
           <div className="border border-[var(--color-border)] bg-[var(--color-card)] p-3 flex flex-col gap-2">
-            <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-2 text-[0.65rem] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-[var(--color-border)] pb-2 text-[0.65rem] font-mono">
               <span className="text-[var(--color-text-dim)]">// RESPONSE_STREAM</span>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span>STATUS:</span>
                 <span
                   className={`font-pixel text-[0.6rem] px-2 py-0.5 border ${

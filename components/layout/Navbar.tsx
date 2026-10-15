@@ -52,9 +52,10 @@ export default function Navbar() {
           <Link
             href="/#home"
             onClick={closeMenu}
-            className="font-pixel text-[0.65rem] sm:text-xs text-[var(--color-text)] tracking-wider hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] px-1.5 py-1 transition-colors border border-transparent hover:border-[var(--color-border)] whitespace-nowrap min-h-[36px] inline-flex items-center"
+            className="font-pixel text-[0.62rem] sm:text-xs text-[var(--color-text)] tracking-wider hover:bg-[var(--color-invert-bg)] hover:text-[var(--color-invert-text)] px-1.5 py-1 transition-colors border border-transparent hover:border-[var(--color-border)] whitespace-nowrap min-h-[44px] inline-flex items-center"
           >
-            JONATHAN_PEGUIT [DEV]
+            <span className="hidden sm:inline">JONATHAN_PEGUIT [DEV // QA]</span>
+            <span className="sm:hidden">J_PEGUIT [DEV/QA]</span>
           </Link>
         </div>
 
@@ -91,7 +92,7 @@ export default function Navbar() {
             type="button"
             onClick={toggleMenu}
             aria-label="Toggle Navigation Menu"
-            className="lg:hidden pixel-btn font-pixel text-[0.6rem] sm:text-[0.65rem] px-2.5 py-1.5 whitespace-nowrap min-h-[40px] flex items-center justify-center"
+            className="lg:hidden pixel-btn font-pixel text-[0.6rem] sm:text-[0.65rem] px-2.5 py-1.5 whitespace-nowrap min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
           >
             {mobileMenuOpen ? "[X_CLOSE]" : "[NAV_MENU]"}
           </button>
@@ -135,15 +136,19 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <a
-              href="/assets/Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={closeMenu}
-              className="p-3 border-2 border-dashed border-[var(--color-text)] text-[var(--color-text)] text-center mt-1 min-h-[44px] flex items-center justify-center font-bold hover:bg-[var(--color-surface)]"
+            <button
+              type="button"
+              onClick={() => {
+                sound.playClick();
+                alert(
+                  "[STATUS: LOCKED] Jonathan's official CV/Resume is currently undergoing updates with latest certifications & project metrics. Please reach out to jonathanjrhayo@gmail.com for direct requests."
+                );
+                closeMenu();
+              }}
+              className="p-3 border-2 border-dashed border-amber-600 dark:border-amber-400 text-amber-700 dark:text-amber-400 bg-amber-500/10 text-center mt-1 min-h-[44px] flex items-center justify-center font-bold cursor-pointer hover:bg-amber-500/20"
             >
-              [+] DOWNLOAD_RESUME_PDF
-            </a>
+              [CV_LOCKED // UNDER_REVISION]
+            </button>
           </div>
         </div>
       )}

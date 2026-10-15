@@ -1,8 +1,21 @@
-import type { Metadata } from "next";
-import { Silkscreen, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Silkscreen, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ui/ClientWrapper";
 import { Analytics } from "@vercel/analytics/next";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#09090b",
+};
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 const pixelFont = Silkscreen({
   subsets: ["latin"],
@@ -22,11 +35,11 @@ const monoFont = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://jonathanpeguitjr.vercel.app"),
   title: {
-    default: "Jonathan Peguit Jr. | Full-Stack Laravel & .NET Developer",
+    default: "Jonathan Peguit Jr. | Full-Stack Developer & Quality Assurance Analyst",
     template: "%s | Jonathan Peguit Jr.",
   },
   description:
-    "Official portfolio of Jonathan Peguit Jr. (QuantumTan) — Full-Stack Laravel Developer (Blade & Bootstrap 5), .NET 8 Clean Architecture Engineer, Student Org Officer, and Peer Mentor at the University of Mindanao.",
+    "Official portfolio of Jonathan Peguit Jr. (QuantumTan) — Full-Stack Developer & Quality Assurance Analyst specializing in .NET 8 Clean Architecture, Laravel 12, Next.js, and automated QA verification.",
   keywords: [
     "Jonathan Peguit",
     "Jonathan Peguit Jr",
@@ -35,11 +48,14 @@ export const metadata: Metadata = {
     "Jonathan Peguit portfolio",
     "Jonathan Peguit University of Mindanao",
     "Jonathan Peguit Davao City",
-    "Jonathan Peguit software engineer",
-    "Jonathan Peguit developer",
-    "Full-Stack Laravel Developer Davao",
+    "Full-Stack Developer Davao",
+    "Quality Assurance Analyst Philippines",
+    "QA Analyst Davao",
+    "Software Testing Specialist",
+    "Automated QA Engineer",
     ".NET 8 Clean Architecture Philippines",
-    "Laravel 12 Blade Bootstrap Developer",
+    "Laravel 12 Blade Developer",
+    "Pest Testing QA",
     "CRMS_Peguit",
     "CRMSystem",
     "swineTrackPOS",
@@ -58,23 +74,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://jonathanpeguitjr.vercel.app",
     siteName: "Jonathan Peguit Jr. Portfolio",
-    title: "Jonathan Peguit Jr. | Full-Stack Laravel & .NET Developer",
+    title: "Jonathan Peguit Jr. | Full-Stack Developer & Quality Assurance Analyst",
     description:
-      "Explore enterprise systems, Laravel 12 platforms, .NET 8 Clean Architecture repositories, and kinetic web interfaces engineered by Jonathan Peguit Jr.",
+      "Explore enterprise systems, Laravel 12 platforms, .NET 8 Clean Architecture repositories, and automated QA suites engineered by Jonathan Peguit Jr.",
     images: [
       {
         url: "/assets/logo-portfolio.png",
         width: 1200,
         height: 630,
-        alt: "Jonathan Peguit Jr. - Developer Portfolio",
+        alt: "Jonathan Peguit Jr. - Developer & QA Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jonathan Peguit Jr. | Full-Stack Developer",
+    title: "Jonathan Peguit Jr. | Full-Stack Developer & QA Analyst",
     description:
-      "Official portfolio of Jonathan Peguit Jr. — Full-Stack Laravel 12, .NET 8 Clean Architecture, Next.js, Java.",
+      "Official portfolio of Jonathan Peguit Jr. — Full-Stack Developer & Quality Assurance Analyst (.NET 8, Laravel 12, Next.js, Pest, xUnit).",
     images: ["/assets/logo-portfolio.png"],
     creator: "@QuantumTan",
   },
@@ -110,7 +126,7 @@ const jsonLd = {
       alternateName: ["Jonathan Peguit", "QuantumTan", "Jonathan Hayo Peguit Jr."],
       url: "https://jonathanpeguitjr.vercel.app",
       image: "https://jonathanpeguitjr.vercel.app/assets/logo-portfolio.png",
-      jobTitle: "Full-Stack & Systems Developer",
+      jobTitle: "Full-Stack Developer & Quality Assurance Analyst",
       worksFor: {
         "@type": "Organization",
         name: "University of Mindanao",
@@ -147,8 +163,12 @@ const jsonLd = {
         "Next.js",
         "TypeScript",
         "MySQL",
-        "Software Engineering",
         "Full-Stack Web Development",
+        "Quality Assurance",
+        "Test Automation",
+        "Pest Testing",
+        "xUnit Testing",
+        "Manual & Exploratory Testing",
       ],
     },
     {
@@ -188,7 +208,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${pixelFont.variable} ${monoFont.variable} font-mono bg-bg text-text antialiased selection:bg-white selection:text-black relative min-h-screen`}
+        className={`${inter.variable} ${pixelFont.variable} ${monoFont.variable} font-sans bg-bg text-text antialiased selection:bg-white selection:text-black relative min-h-screen`}
       >
         <ClientWrapper>{children}</ClientWrapper>
         <Analytics />

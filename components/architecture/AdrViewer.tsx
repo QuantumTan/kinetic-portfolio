@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { adrRecords, ADR } from "@/data/adr-data";
 import { sound } from "@/utils/sound";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 interface AdrViewerProps {
   projectId: string;
@@ -38,7 +39,7 @@ export default function AdrViewer({ projectId }: AdrViewerProps) {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[0.65rem] text-[var(--color-text-dim)]">STATUS:</span>
           <span className="font-pixel text-[0.55rem] sm:text-[0.6rem] px-2 py-0.5 border border-emerald-500 text-emerald-400 bg-emerald-950/20">
             [{activeAdr.status}]
@@ -133,7 +134,7 @@ export default function AdrViewer({ projectId }: AdrViewerProps) {
               <ul className="space-y-1.5 font-mono text-[0.65rem] sm:text-xs text-[var(--color-text-muted)]">
                 {activeAdr.consequences.positive.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-1.5">
-                    <span className="text-emerald-400">✔</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -158,9 +159,9 @@ export default function AdrViewer({ projectId }: AdrViewerProps) {
           {/* CODE COMPLIANCE PROOF */}
           {activeAdr.complianceCodeSnippet && (
             <div>
-              <div className="flex items-center justify-between pb-1 text-[0.65rem] font-mono text-[var(--color-text-dim)]">
+              <div className="flex flex-wrap items-center justify-between gap-1 pb-1 text-[0.65rem] font-mono text-[var(--color-text-dim)]">
                 <span>[03] COMPLIANCE_CODE_PROOF:</span>
-                <code className="text-[var(--color-text)]">
+                <code className="text-[var(--color-text)] truncate max-w-full sm:max-w-none">
                   {activeAdr.complianceCodeSnippet.filename}
                 </code>
               </div>

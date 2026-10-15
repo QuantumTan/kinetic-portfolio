@@ -22,6 +22,19 @@
   --color-invert-bg: #f4f4f5;
   --color-invert-text: #09090b;
 
+  --color-accent: #34d399;
+  --color-accent-hover: #6ee7b7;
+  --color-accent-subtle: rgba(52, 211, 153, 0.12);
+  --color-accent-border: #059669;
+  --color-accent-text: #a7f3d0;
+
+  --color-syntax-green: #34d399;
+  --color-syntax-sky: #38bdf8;
+  --color-syntax-amber: #fbbf24;
+  --color-syntax-neutral: #d4d4d8;
+  --color-code-bg: #111115;
+  --color-code-border: #27272a;
+
   --shadow-pixel: 4px 4px 0px #18181b;
   --shadow-pixel-white: 4px 4px 0px #ffffff;
 }
@@ -45,6 +58,19 @@
   --color-invert-bg: #141414;
   --color-invert-text: #f4f4f0;
 
+  --color-accent: #047857;
+  --color-accent-hover: #065f46;
+  --color-accent-subtle: rgba(4, 120, 87, 0.08);
+  --color-accent-border: #047857;
+  --color-accent-text: #064e3b;
+
+  --color-syntax-green: #047857;
+  --color-syntax-sky: #0369a1;
+  --color-syntax-amber: #b45309;
+  --color-syntax-neutral: #3f3f46;
+  --color-code-bg: #eaeae5;
+  --color-code-border: #d6d6cf;
+
   --shadow-pixel: 4px 4px 0px #262626;
   --shadow-pixel-white: 4px 4px 0px #262626;
 }
@@ -53,6 +79,7 @@
    TAILWIND THEME EXTENSIONS
 ───────────────────────────────────────── */
 @theme {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-pixel: var(--font-pixel), monospace;
   --font-mono: var(--font-mono), monospace;
 
@@ -66,6 +93,19 @@
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
   --color-text-dim: var(--color-text-dim);
+
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-subtle: var(--color-accent-subtle);
+  --color-accent-border: var(--color-accent-border);
+  --color-accent-text: var(--color-accent-text);
+
+  --color-syntax-green: var(--color-syntax-green);
+  --color-syntax-sky: var(--color-syntax-sky);
+  --color-syntax-amber: var(--color-syntax-amber);
+  --color-syntax-neutral: var(--color-syntax-neutral);
+  --color-code-bg: var(--color-code-bg);
+  --color-code-border: var(--color-code-border);
 }
 
 /* ─────────────────────────────────────────
@@ -92,7 +132,7 @@ html.custom-cursor-active {
 }
 
 body {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
@@ -105,6 +145,10 @@ body {
 /* ─────────────────────────────────────────
    PIXELATED UTILITIES & BORDERS
 ───────────────────────────────────────── */
+.font-sans {
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
 .font-pixel {
   font-family: var(--font-pixel), monospace;
   letter-spacing: 0.04em;
@@ -177,6 +221,15 @@ body {
   .section-card {
     padding: 20px 16px;
     margin: 20px auto;
+    box-shadow: 4px 4px 0px var(--color-border);
+  }
+}
+
+@media (max-width: 480px) {
+  .section-card {
+    padding: 16px 12px;
+    margin: 16px auto;
+    box-shadow: 3px 3px 0px var(--color-border);
   }
 }
 
@@ -237,11 +290,3 @@ body.cursor-hover #cursor-ring {
   animation: blink-cursor 0.9s infinite;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .section-card {
-    margin: 20px auto;
-    padding: 20px 14px;
-    box-shadow: 4px 4px 0px var(--color-border);
-  }
-}

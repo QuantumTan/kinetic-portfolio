@@ -111,71 +111,76 @@ export default function ProjectBlueprintClient({ project, arch }: Props) {
       {/* 5-TAB BLUEPRINT WORKSPACE */}
       <div className="border-2 border-[var(--color-border)] bg-[var(--color-card)] overflow-hidden shadow-[6px_6px_0px_var(--color-border)]">
         {/* TABS BAR */}
-        <div className="flex border-b-2 border-[var(--color-border)] bg-[var(--color-bg)] overflow-x-auto">
+        <div className="flex border-b-2 border-[var(--color-border)] bg-[var(--color-bg)] overflow-x-auto shrink-0">
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("layers");
             }}
-            className={`flex-1 min-w-[170px] py-3 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[170px] py-3 px-2 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
               activeTab === "layers"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [01 // LAYER_BLUEPRINT]
+            <span className="hidden sm:inline">[01 // LAYER_BLUEPRINT]</span>
+            <span className="sm:hidden">[01 // LAYERS]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("schema");
             }}
-            className={`flex-1 min-w-[170px] py-3 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[170px] py-3 px-2 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
               activeTab === "schema"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [02 // SCHEMA_INSPECTOR]
+            <span className="hidden sm:inline">[02 // SCHEMA_INSPECTOR]</span>
+            <span className="sm:hidden">[02 // SCHEMA]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("pipeline");
             }}
-            className={`flex-1 min-w-[170px] py-3 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[170px] py-3 px-2 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
               activeTab === "pipeline"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [03 // REQUEST_PIPELINE]
+            <span className="hidden sm:inline">[03 // REQUEST_PIPELINE]</span>
+            <span className="sm:hidden">[03 // PIPELINE]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("api");
             }}
-            className={`flex-1 min-w-[170px] py-3 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[170px] py-3 px-2 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all border-r border-[var(--color-border)] min-h-[48px] flex items-center justify-center cursor-pointer ${
               activeTab === "api"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [04 // API_CONTRACTS]
+            <span className="hidden sm:inline">[04 // API_CONTRACTS]</span>
+            <span className="sm:hidden">[04 // API]</span>
           </button>
           <button
             onClick={() => {
               sound.playClick();
               setActiveTab("adr");
             }}
-            className={`flex-1 min-w-[170px] py-3 px-3 font-pixel text-[0.65rem] sm:text-xs text-center transition-all min-h-[48px] flex items-center justify-center cursor-pointer ${
+            className={`flex-1 min-w-[125px] sm:min-w-[170px] py-3 px-2 sm:px-3 font-pixel text-[0.62rem] sm:text-xs text-center transition-all min-h-[48px] flex items-center justify-center cursor-pointer ${
               activeTab === "adr"
                 ? "bg-[var(--color-surface)] text-[var(--color-text)] border-b-2 border-b-[var(--color-text)] font-bold"
                 : "text-[var(--color-text-dim)] hover:bg-[var(--color-card)]"
             }`}
           >
-            [05 // ADR_RECORDS]
+            <span className="hidden sm:inline">[05 // ADR_RECORDS]</span>
+            <span className="sm:hidden">[05 // ADR]</span>
           </button>
         </div>
 
