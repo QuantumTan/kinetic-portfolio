@@ -12,7 +12,6 @@ const NAV_ITEMS = [
   { id: "projects", label: "PROJECTS" },
   { id: "certifications", label: "CERTS" },
   { id: "education", label: "EDU" },
-  { id: "mentorship", label: "MENTOR" },
   { id: "contact", label: "CONTACT" },
 ];
 

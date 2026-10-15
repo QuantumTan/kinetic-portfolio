@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Silkscreen, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ui/ClientWrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 const pixelFont = Silkscreen({
   subsets: ["latin"],
@@ -190,6 +191,7 @@ export default function RootLayout({
         className={`${pixelFont.variable} ${monoFont.variable} font-mono bg-bg text-text antialiased selection:bg-white selection:text-black relative min-h-screen`}
       >
         <ClientWrapper>{children}</ClientWrapper>
+        <Analytics />
       </body>
     </html>
   );

@@ -5,7 +5,6 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Certifications from "@/components/sections/Certifications";
 import Education from "@/components/sections/Education";
-import MentorshipTelemetry from "@/components/sections/MentorshipTelemetry";
 import Contact from "@/components/sections/Contact";
 import ChatTrigger from "@/components/chatbot/ChatTrigger";
 
@@ -24,7 +23,6 @@ export default function Home() {
           <Certifications />
           <Education />
         </div>
-        <MentorshipTelemetry />
         <Contact />
       </main>
       <Footer />

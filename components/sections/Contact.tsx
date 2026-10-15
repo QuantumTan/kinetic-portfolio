@@ -224,7 +224,7 @@ export default function Contact() {
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 bg-[var(--color-text)] inline-block animate-pulse" />
           <h2 className="font-pixel text-xs sm:text-base text-[var(--color-text)] tracking-wider uppercase">
-            06 // COMMUNICATIONS_DISPATCH // TERMINAL
+            05 // COMMUNICATIONS_DISPATCH // TERMINAL
           </h2>
         </div>
         <div className="flex items-center gap-3 font-mono text-xs text-[var(--color-text-dim)]">
